@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "771903790065",
+    "firebase_url": "https://first-firebase-b1a84-default-rtdb.firebaseio.com",
+    "project_id": "first-firebase-b1a84",
+    "storage_bucket": "first-firebase-b1a84.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:771903790065:android:5b7add35d65ced8edb8250",
+        "android_client_info": {
+          "package_name": "com.example.studentmanagement"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGnetfHZfcwRWWFRLdpcddAY1CoRuyND0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:771903790065:android:109884cdf11dc5e3db8250",
+        "android_client_info": {
+          "package_name": "com.example.studentmanament"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGnetfHZfcwRWWFRLdpcddAY1CoRuyND0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
