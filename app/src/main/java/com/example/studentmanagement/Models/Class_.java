@@ -2,19 +2,9 @@ package com.example.studentmanagement.Models;
 
 import java.util.List;
 
-public class Class {
+public class Class_ {
+
     private String id;
-    private String name;
-    private List<Student> students;
-
-    public Class(String id, String name, List<Student> students) {
-        this.id = id;
-        this.name = name;
-        this.students = students;
-    }
-
-    public Class() {
-    }
 
     public String getId() {
         return id;
@@ -23,6 +13,27 @@ public class Class {
     public void setId(String id) {
         this.id = id;
     }
+
+    private String name;
+    private List<Student> students;
+
+    public Class_(String name) {
+
+        this.name = name;
+        // Khởi tạo students là null
+        this.students = null;
+    }
+
+    public Class_(String name, List<Student> students) {
+
+        this.name = name;
+        this.students = students;
+    }
+
+    public Class_() {
+    }
+
+
 
     public String getName() {
         return name;

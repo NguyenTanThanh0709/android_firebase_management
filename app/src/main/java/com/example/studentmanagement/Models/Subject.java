@@ -1,16 +1,8 @@
 package com.example.studentmanagement.Models;
 
 public class Subject {
-    private String id;
     private String name;
-
-    public Subject(String id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public Subject() {
-    }
+    private String id;
 
     public String getId() {
         return id;
@@ -19,4 +11,20 @@ public class Subject {
     public void setId(String id) {
         this.id = id;
     }
+
+    public Subject(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Subject() {
+    }
+
 }

@@ -20,9 +20,7 @@
             app:popupTheme="@style/Theme.StudentManagement.PopupOverlay" />
 
     </com.google.android.material.appbar.AppBarLayout>
-
     <include layout="@layout/content_main" />
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_bottom"
         android:layout_width="match_parent"
@@ -33,6 +31,4 @@
         app:menu="@menu/menu_home"
         app:itemTextColor="@color/customcolorhome"
         />
-
-
 </RelativeLayout>

@@ -3,10 +3,10 @@ package com.example.studentmanagement.Models;
 import java.time.LocalDate;
 
 public class Certificate {
-    private String id;
+
     private String name;
-    private LocalDate startCertificate;
-    private LocalDate endCertificate;
+    private String startCertificate;
+    private String endCertificate;
     private double overalScore;
     private String describe;
     private String link;
@@ -14,8 +14,8 @@ public class Certificate {
     public Certificate() {
     }
 
-    public Certificate(String id, String name, LocalDate startCertificate, LocalDate endCertificate, double overalScore, String describe, String link) {
-        this.id = id;
+    public Certificate( String name, String startCertificate, String endCertificate, double overalScore, String describe, String link) {
+
         this.name = name;
         this.startCertificate = startCertificate;
         this.endCertificate = endCertificate;
@@ -25,14 +25,6 @@ public class Certificate {
     }
 
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }
@@ -41,22 +33,20 @@ public class Certificate {
         this.name = name;
     }
 
-    public LocalDate getStartCertificate() {
+    public String getStartCertificate() {
         return startCertificate;
     }
 
-    public void setStartCertificate(LocalDate startCertificate) {
+    public void setStartCertificate(String startCertificate) {
         this.startCertificate = startCertificate;
     }
-
-    public LocalDate getEndCertificate() {
+    public String getEndCertificate() {
         return endCertificate;
     }
 
-    public void setEndCertificate(LocalDate endCertificate) {
+    public void setEndCertificate(String endCertificate) {
         this.endCertificate = endCertificate;
     }
-
     public double getOveralScore() {
         return overalScore;
     }
@@ -80,7 +70,4 @@ public class Certificate {
     public void setLink(String link) {
         this.link = link;
     }
-
-
-
 }

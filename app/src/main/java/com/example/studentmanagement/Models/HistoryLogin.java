@@ -1,6 +1,5 @@
 package com.example.studentmanagement.Models;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class HistoryLogin {
@@ -14,7 +13,7 @@ public class HistoryLogin {
         StartLogout = startLogout;
     }
 
-    public HistoryLogin() {
+    public HistoryLogin(User user1, org.threeten.bp.LocalDateTime now, org.threeten.bp.LocalDateTime localDateTime) {
     }
 
     public User getUser() {

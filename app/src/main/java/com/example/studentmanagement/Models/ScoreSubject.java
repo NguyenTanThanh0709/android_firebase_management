@@ -3,18 +3,19 @@ package com.example.studentmanagement.Models;
 import java.time.LocalDate;
 
 public class ScoreSubject {
+    private String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     private double socre;
     private Subject subject;
-    private LocalDate startLearn;
-
-    public ScoreSubject(double socre, Subject subject, LocalDate startLearn) {
-        this.socre = socre;
-        this.subject = subject;
-        this.startLearn = startLearn;
-    }
-
-    public ScoreSubject() {
-    }
+    private String startLearn;
 
     public double getSocre() {
         return socre;
@@ -32,11 +33,23 @@ public class ScoreSubject {
         this.subject = subject;
     }
 
-    public LocalDate getStartLearn() {
+    public String getStartLearn() {
         return startLearn;
     }
 
-    public void setStartLearn(LocalDate startLearn) {
+    public void setStartLearn(String startLearn) {
         this.startLearn = startLearn;
     }
+
+    public ScoreSubject() {
+    }
+
+    public ScoreSubject(double socre, Subject subject,  String startLearn) {
+        this.socre = socre;
+        this.subject = subject;
+
+        this.startLearn = startLearn;
+    }
+
+
 }

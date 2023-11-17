@@ -4,46 +4,23 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class Student {
-    private String id;
     private String name;
     private  String phoneNumber;
     private String email;
-    private LocalDate birthDay;
+    private String birthDay;
     private Boolean status;
     private String avatar;
-    private LocalDate startSchool;
-    private LocalDate endSchool;
-    private double GPA;
-
-    public Student() {
-    }
-
-    public Student(String id, String name, String phoneNumber, String email, LocalDate birthDay, Boolean status, String avatar, LocalDate startSchool, LocalDate endSchool, double GPA, Class aClass, List<ScoreSubject> scoreSubjects, List<Certificate> certificates) {
-        this.id = id;
-        this.name = name;
-        this.phoneNumber = phoneNumber;
-        this.email = email;
-        this.birthDay = birthDay;
-        this.status = status;
-        this.avatar = avatar;
-        this.startSchool = startSchool;
-        this.endSchool = endSchool;
-        this.GPA = GPA;
-        this.aClass = aClass;
-        this.scoreSubjects = scoreSubjects;
-        this.certificates = certificates;
-    }
-
-    private Class aClass;
+    private String startSchool;
+    private String endSchool;
     private List<ScoreSubject> scoreSubjects;
     private List<Certificate> certificates;
 
-    public String getId() {
-        return id;
+    public List<ScoreSubject> getScoreSubjects() {
+        return scoreSubjects;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setScoreSubjects(List<ScoreSubject> scoreSubjects) {
+        this.scoreSubjects = scoreSubjects;
     }
 
     public String getName() {
@@ -70,11 +47,11 @@ public class Student {
         this.email = email;
     }
 
-    public LocalDate getBirthDay() {
+    public String getBirthDay() {
         return birthDay;
     }
 
-    public void setBirthDay(LocalDate birthDay) {
+    public void setBirthDay(String birthDay) {
         this.birthDay = birthDay;
     }
 
@@ -94,44 +71,20 @@ public class Student {
         this.avatar = avatar;
     }
 
-    public LocalDate getStartSchool() {
+    public String getStartSchool() {
         return startSchool;
     }
 
-    public void setStartSchool(LocalDate startSchool) {
+    public void setStartSchool(String startSchool) {
         this.startSchool = startSchool;
     }
 
-    public LocalDate getEndSchool() {
+    public String getEndSchool() {
         return endSchool;
     }
 
-    public void setEndSchool(LocalDate endSchool) {
+    public void setEndSchool(String endSchool) {
         this.endSchool = endSchool;
-    }
-
-    public double getGPA() {
-        return GPA;
-    }
-
-    public void setGPA(double GPA) {
-        this.GPA = GPA;
-    }
-
-    public Class getaClass() {
-        return aClass;
-    }
-
-    public void setaClass(Class aClass) {
-        this.aClass = aClass;
-    }
-
-    public List<ScoreSubject> getScoreSubjects() {
-        return scoreSubjects;
-    }
-
-    public void setScoreSubjects(List<ScoreSubject> scoreSubjects) {
-        this.scoreSubjects = scoreSubjects;
     }
 
     public List<Certificate> getCertificates() {
@@ -141,4 +94,33 @@ public class Student {
     public void setCertificates(List<Certificate> certificates) {
         this.certificates = certificates;
     }
+
+    public Student() {
+    }
+
+    public Student(String name, String phoneNumber, String email, String birthDay, Boolean status, String avatar, String startSchool, String endSchool) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.birthDay = birthDay;
+        this.status = status;
+        this.avatar = avatar;
+        this.startSchool = startSchool;
+        this.endSchool = endSchool;
+    }
+
+    public Student(String name, String phoneNumber, String email, String birthDay, Boolean status, String avatar, String startSchool, String endSchool, List<Certificate> certificates) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.birthDay = birthDay;
+        this.status = status;
+        this.avatar = avatar;
+        this.startSchool = startSchool;
+        this.endSchool = endSchool;
+        this.certificates = certificates;
+    }
+
+
+
 }

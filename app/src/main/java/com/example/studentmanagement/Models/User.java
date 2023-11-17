@@ -4,40 +4,30 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class User {
-    private String id;
     private String name;
     private  String phoneNumber;
     private String email;
-    private LocalDate birthDay;
+    private String birthDay;
     private Boolean status;
     private String avatar;
     private Role role;
     private String password;
-    private List<HistoryLogin> historyLogin;
 
-    public User(String id, String name, String phoneNumber, String email, LocalDate birthDay, Boolean status, String avatar, Role role, String password, List<HistoryLogin> historyLogin) {
-        this.id = id;
+    public User( String name, String phoneNumber, String email, String birthDay, Boolean status, String avatar, Role role, String password) {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.birthDay = birthDay;
+      this.birthDay = birthDay;
         this.status = status;
         this.avatar = avatar;
         this.role = role;
         this.password = password;
-        this.historyLogin = historyLogin;
+
     }
 
     public User() {
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -63,11 +53,11 @@ public class User {
         this.email = email;
     }
 
-    public LocalDate getBirthDay() {
+    public String getBirthDay() {
         return birthDay;
     }
 
-    public void setBirthDay(LocalDate birthDay) {
+    public void setBirthDay(String birthDay) {
         this.birthDay = birthDay;
     }
 
@@ -91,6 +81,20 @@ public class User {
         return role;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "name='" + name + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", email='" + email + '\'' +
+                ", birthDay='" + birthDay + '\'' +
+                ", status=" + status +
+                ", avatar='" + avatar + '\'' +
+                ", role=" + role +
+                ", password='" + password + '\'' +
+                '}';
+    }
+
     public void setRole(Role role) {
         this.role = role;
     }
@@ -103,11 +107,4 @@ public class User {
         this.password = password;
     }
 
-    public List<HistoryLogin> getHistoryLogin() {
-        return historyLogin;
-    }
-
-    public void setHistoryLogin(List<HistoryLogin> historyLogin) {
-        this.historyLogin = historyLogin;
-    }
 }
