@@ -1,10 +1,13 @@
 package com.example.studentmanagement.Adapter.User;
 
+import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,6 +22,7 @@ import java.util.List;
 
 public class UserAdapter extends  RecyclerView.Adapter<UserAdapter.UserHolder> {
     private List<User> list;
+    private Context context;
 
     public List<User> getList() {
         return list;
@@ -32,6 +36,11 @@ public class UserAdapter extends  RecyclerView.Adapter<UserAdapter.UserHolder> {
         this.list = list;
     }
 
+    public UserAdapter(List<User> list, Context context) {
+        this.list = list;
+        this.context = context;
+    }
+
     @NonNull
     @Override
     public UserHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -41,12 +50,24 @@ public class UserAdapter extends  RecyclerView.Adapter<UserAdapter.UserHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull UserHolder holder, int position) {
-        User user =     list.get(position);
+        User user =  list.get(position);
         // Use Picasso to load the image into the ImageView
-        Picasso.get().load(user.getAvatar()).into(holder.imageView);
+        Picasso.get()
+                .load(user.getAvatar())
+                .placeholder(R.drawable.user)
+                .error(R.drawable.user)
+                .into(holder.imageView);
+
         holder.email.setText(user.getEmail());
         holder.name.setText(user.getName());
         holder.role.setText(user.getRole().toString());
+
+        holder.imageView_more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showPopupMenu(view);
+            }
+        });
 
     }
 
@@ -75,4 +96,33 @@ public class UserAdapter extends  RecyclerView.Adapter<UserAdapter.UserHolder> {
 
         }
     }
+
+    private void showPopupMenu(View view) {
+        PopupMenu popupMenu = new PopupMenu(context, view);
+        popupMenu.inflate(R.menu.menu_more_employee); // Replace with your menu resource
+
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                int itemId = menuItem.getItemId();
+
+                if (itemId == R.id.menu_sedetail_employee) {
+                    // Handle option 1
+                    return true;
+                } else if (itemId == R.id.menu_edit_employee) {
+                    // Handle option 2
+                    return true;
+                }else if (itemId == R.id.menu_delete_employee) {
+                    // Handle option 2
+                    return true;
+                } else {
+                    // Add more conditions for each menu item
+                    return false;
+                }
+            }
+        });
+
+        popupMenu.show();
+    }
+
 }

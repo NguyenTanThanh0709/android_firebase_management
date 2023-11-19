@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:layout_margin="7dp"
+    android:padding="5dp"
+    tools:context=".Fragment.FormEmployeeFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/image_user"
+            android:layout_width="0dp"
+            android:layout_height="110dp"
+            android:layout_margin="8dp"
+            android:layout_weight="2"
+            android:scaleType="fitXY"
+            android:src="@drawable/pagebkg" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_weight="2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/name_employee"
+                android:layout_width="match_parent"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content"
+                android:hint="Tên của nhân viên" />
+
+            <EditText
+                android:id="@+id/phone_employee"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:inputType="phone"
+                android:hint="Số điện thoại" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email:              "
+            android:textStyle="bold"
+            android:textSize="15dp"
+            android:textColor="#0000FF"
+            android:layout_marginEnd="8dp"/>
+        <EditText
+            android:id="@+id/email_employee"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:hint="Email" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ngày sinh:       "
+            android:textStyle="bold"
+            android:textSize="15dp"
+            android:textColor="#0000FF"
+            android:layout_marginEnd="8dp"/>
+        <!-- TextInputLayout with TextInputEditText -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                android:hint="Ngày sinh của nhân viên"
+                android:focusable="false"
+                android:onClick="showDatePickerDialog" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Trạng thái:      "
+            android:textStyle="bold"
+            android:textSize="15dp"
+            android:textColor="#0000FF"
+            android:layout_marginEnd="8dp"/>
+
+        <!-- First RadioButton -->
+        <RadioButton
+            android:id="@+id/radioNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Normal" />
+
+        <!-- Second RadioButton -->
+        <RadioButton
+            android:id="@+id/radioLocked"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Locked" />
+    </RadioGroup>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Role:                "
+            android:textStyle="bold"
+            android:textSize="15dp"
+            android:textColor="#0000FF"
+            android:layout_marginEnd="8dp"/>
+
+        <!-- Spinner for selecting the role -->
+        <Spinner
+            android:id="@+id/spinnerRole"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mật khẩu:        "
+            android:textStyle="bold"
+            android:textSize="15dp"
+            android:textColor="#0000FF"
+            android:layout_marginEnd="8dp"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/password_employee"
+
+            android:inputType=""
+            android:hint="Mật khẩu" />
+    </LinearLayout>
+
+    <!-- Các trường khác tùy thuộc vào yêu cầu của bạn -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="8dp"
+            android:text="Submit"
+            android:background="@drawable/rounded_button_primary"
+            android:textColor="#FFFFFF"
+            android:onClick="onSubmitClick" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="8dp"
+            android:text="Clear"
+            android:background="@drawable/rounded_button_secondary"
+            android:textColor="#FFFFFF"
+            android:onClick="onClear" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -15,6 +15,7 @@ public class User {
     private Role role;
     private String password;
 
+
     private Map<String, HistoryLogin> historyLogins;
 
     public Map<String, HistoryLogin> getHistoryLogins() {

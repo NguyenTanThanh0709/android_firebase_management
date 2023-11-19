@@ -73,8 +73,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static  int FRAGMENT_CURRENT = FRAGMENT_HOME;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,28 +93,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         rePlaceFragment(new HomeFragment());
         navigationView.getMenu().findItem(R.id.nav_home).setChecked(true);
 
-        Student student1 = new Student("John Doe", "21", "john.doe@example.com", "2000-01-01", true, "avatar1.jpg", "2020-01-01", "2023-01-01");
-        Student student2 = new Student("John Doe", "2122", "john.doe@example.com", "2000-01-01", true, "avatar1.jpg", "2020-01-01", "2023-01-01");
-        Student student3 = new Student("John Doe", "1234533689", "john.doe@example.com", "2000-01-01", true, "avatar1.jpg", "2020-01-01", "2023-01-01");
-        List<Student> list = new ArrayList<>();
-        list.add(student3);
-        list.add(student2);
-        list.add(student1);
-        DatabaseManagerStudent databaseManagerStudent = new DatabaseManagerStudent();
-        databaseManagerStudent.addListStudentsAndAssociateWithClass("18112023224431", list)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        // Adding student to class was successful
-                        // You can perform any additional actions here
-                    } else {
-                        // Handle the error
-                        Exception exception = task.getException();
-                        if (exception != null) {
-                            // Log or display the exception message
-                            exception.printStackTrace();
-                        }
-                    }
-                });
 
 
 

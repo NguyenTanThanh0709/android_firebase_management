@@ -22,4 +22,7 @@
     <style name="Theme.StudentManagement.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.StudentManagement.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="Theme.StudentManagement.DarkActionBar" parent="Theme.AppCompat.Light">
+        <!-- Other theme attributes specific to YourCustomTheme -->
+    </style>
 </resources>
