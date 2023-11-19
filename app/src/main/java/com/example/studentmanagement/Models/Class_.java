@@ -13,7 +13,6 @@ public class Class_ {
     public void setId(String id) {
         this.id = id;
     }
-
     private String name;
     private List<Student> students;
 
@@ -33,7 +32,10 @@ public class Class_ {
     public Class_() {
     }
 
-
+    public Class_(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
     public String getName() {
         return name;

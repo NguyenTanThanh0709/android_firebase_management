@@ -14,6 +14,27 @@ public class Student {
     private String endSchool;
     private List<ScoreSubject> scoreSubjects;
     private List<Certificate> certificates;
+    private Class_ class_;
+
+    public Student(String name, String phoneNumber, String email, String birthDay, Boolean status, String avatar, String startSchool, String endSchool, Class_ class_) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.birthDay = birthDay;
+        this.status = status;
+        this.avatar = avatar;
+        this.startSchool = startSchool;
+        this.endSchool = endSchool;
+        this.class_ = class_;
+    }
+
+    public Class_ getClass_() {
+        return class_;
+    }
+
+    public void setClass_(Class_ class_) {
+        this.class_ = class_;
+    }
 
     public List<ScoreSubject> getScoreSubjects() {
         return scoreSubjects;

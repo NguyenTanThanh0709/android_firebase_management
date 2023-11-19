@@ -4,6 +4,9 @@ import java.time.LocalDate;
 
 public class ScoreSubject {
     private String id;
+    private double socre;
+    private Subject subject;
+    private String startLearn;
 
     public String getId() {
         return id;
@@ -13,9 +16,6 @@ public class ScoreSubject {
         this.id = id;
     }
 
-    private double socre;
-    private Subject subject;
-    private String startLearn;
 
     public double getSocre() {
         return socre;
@@ -44,12 +44,10 @@ public class ScoreSubject {
     public ScoreSubject() {
     }
 
-    public ScoreSubject(double socre, Subject subject,  String startLearn) {
+    public ScoreSubject(String id, double socre, Subject subject, String startLearn) {
+        this.id = id;
         this.socre = socre;
         this.subject = subject;
-
         this.startLearn = startLearn;
     }
-
-
 }

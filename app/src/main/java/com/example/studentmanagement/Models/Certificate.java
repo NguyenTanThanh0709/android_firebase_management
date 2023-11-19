@@ -4,12 +4,23 @@ import java.time.LocalDate;
 
 public class Certificate {
 
+    private String id;
     private String name;
     private String startCertificate;
     private String endCertificate;
     private double overalScore;
     private String describe;
     private String link;
+
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
 
     public Certificate() {
     }

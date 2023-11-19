@@ -3,40 +3,62 @@ package com.example.studentmanagement.Models;
 import java.time.LocalDateTime;
 
 public class HistoryLogin {
-    private User user;
-    private LocalDateTime startLogin;
-    private LocalDateTime StartLogout;
+    private String id;
+    private String startLogin;
+    private String StartLogout;
+    private  String locate;
+    private String idAdress;
 
-    public HistoryLogin(User user, LocalDateTime startLogin, LocalDateTime startLogout) {
-        this.user = user;
+
+    public HistoryLogin(String id, String startLogin, String startLogout, String locate, String idAdress) {
+        this.id = id;
         this.startLogin = startLogin;
         StartLogout = startLogout;
+        this.locate = locate;
+        this.idAdress = idAdress;
     }
 
-    public HistoryLogin(User user1, org.threeten.bp.LocalDateTime now, org.threeten.bp.LocalDateTime localDateTime) {
+    public String getId() {
+        return id;
     }
 
-    public User getUser() {
-        return user;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public LocalDateTime getStartLogin() {
+    public String getStartLogin() {
         return startLogin;
     }
 
-    public void setStartLogin(LocalDateTime startLogin) {
+    public void setStartLogin(String startLogin) {
         this.startLogin = startLogin;
     }
 
-    public LocalDateTime getStartLogout() {
+    public String getStartLogout() {
         return StartLogout;
     }
 
-    public void setStartLogout(LocalDateTime startLogout) {
+    public void setStartLogout(String startLogout) {
         StartLogout = startLogout;
     }
+
+    public String getLocate() {
+        return locate;
+    }
+
+    public void setLocate(String locate) {
+        this.locate = locate;
+    }
+
+    public String getIdAdress() {
+        return idAdress;
+    }
+
+    public void setIdAdress(String idAdress) {
+        this.idAdress = idAdress;
+    }
+
+    public HistoryLogin() {
+    }
+
 }

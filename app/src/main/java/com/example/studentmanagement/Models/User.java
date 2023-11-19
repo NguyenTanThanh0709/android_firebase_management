@@ -1,7 +1,9 @@
 package com.example.studentmanagement.Models;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class User {
     private String name;
@@ -13,16 +15,32 @@ public class User {
     private Role role;
     private String password;
 
-    public User( String name, String phoneNumber, String email, String birthDay, Boolean status, String avatar, Role role, String password) {
+    private Map<String, HistoryLogin> historyLogins;
+
+    public Map<String, HistoryLogin> getHistoryLogins() {
+        return historyLogins;
+    }
+
+    public void setHistoryLogins(Map<String, HistoryLogin> historyLogins) {
+        this.historyLogins = historyLogins;
+    }
+
+    public void addHistoryLogin(String customPushId, HistoryLogin historyLogin) {
+        if (historyLogins == null) {
+            historyLogins = new HashMap<>();
+        }
+        historyLogins.put(customPushId, historyLogin);
+    }
+
+    public User(String name, String phoneNumber, String email, String birthDay, Boolean status, String avatar, Role role, String password) {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;
-      this.birthDay = birthDay;
+        this.birthDay = birthDay;
         this.status = status;
         this.avatar = avatar;
         this.role = role;
         this.password = password;
-
     }
 
     public User() {
