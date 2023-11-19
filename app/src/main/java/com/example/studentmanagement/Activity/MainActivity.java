@@ -1,9 +1,6 @@
-package com.example.studentmanagement;
+package com.example.studentmanagement.Activity;
 
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -14,49 +11,20 @@ import com.example.studentmanagement.Fragment.HomeFragment;
 import com.example.studentmanagement.Fragment.MyProfileFragment;
 import com.example.studentmanagement.Fragment.StudentFragment;
 import com.example.studentmanagement.Fragment.SubjectFragment;
-import com.example.studentmanagement.Models.Certificate;
-import com.example.studentmanagement.Models.Class_;
-import com.example.studentmanagement.Models.HistoryLogin;
-import com.example.studentmanagement.Models.Role;
-import com.example.studentmanagement.Models.ScoreSubject;
-import com.example.studentmanagement.Models.Student;
-import com.example.studentmanagement.Models.Subject;
-import com.example.studentmanagement.Models.User;
-import com.example.studentmanagement.utils.DatabaseManagerClass;
-import com.example.studentmanagement.utils.DatabaseManagerStudent;
-import com.example.studentmanagement.utils.DatabaseManagerSubject;
-import com.example.studentmanagement.utils.DatabaseManagerUser;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.example.studentmanagement.R;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.studentmanagement.databinding.ActivityMainBinding;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -155,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }else  if(id == R.id.nav_logout){
 
            Toast.makeText(MainActivity.this, "Log Out", Toast.LENGTH_SHORT).show();
-
+            finish();
         }
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;

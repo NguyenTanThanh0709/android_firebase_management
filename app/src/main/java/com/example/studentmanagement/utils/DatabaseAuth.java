@@ -1,10 +1,7 @@
 package com.example.studentmanagement.utils;
 
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 
-import com.example.studentmanagement.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;

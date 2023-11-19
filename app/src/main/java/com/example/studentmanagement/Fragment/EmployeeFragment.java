@@ -1,5 +1,6 @@
 package com.example.studentmanagement.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,10 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.studentmanagement.Activity.EmployeeActivity;
+import com.example.studentmanagement.Activity.MainActivity;
 import com.example.studentmanagement.Adapter.User.UserAdapter;
 import com.example.studentmanagement.Models.Role;
 import com.example.studentmanagement.Models.User;
 import com.example.studentmanagement.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +44,10 @@ public class EmployeeFragment extends Fragment {
     private UserAdapter userAdapter;
     private List<User> userList;
 
+    private FloatingActionButton menu_add_employee;
+
+
+
     public EmployeeFragment() {
         // Required empty public constructor
     }
@@ -62,6 +70,9 @@ public class EmployeeFragment extends Fragment {
         return fragment;
     }
 
+    public static EmployeeFragment newInstance() {
+        return new EmployeeFragment();
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +94,15 @@ public class EmployeeFragment extends Fragment {
         recyclerView.setAdapter(userAdapter);
 
         getListUser();
+        menu_add_employee = view.findViewById(R.id.menu_add_employee);
+        menu_add_employee.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), EmployeeActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         return view;
     }
@@ -92,4 +112,5 @@ public class EmployeeFragment extends Fragment {
         userList.add(new User("String" , "String" , "String" , "String" , true , "https://daotao.muasamcong.gov.vn/learning/File/User/Avt/avatar-default.png" , Role.EMPLOYEE , "String" ));
         userList.add(new User("String" , "String" , "String" , "String" , true , "https://daotao.muasamcong.gov.vn/learning/File/User/Avt/avatar-default.png" , Role.EMPLOYEE , "String" ));
     }
+
 }

@@ -1,6 +1,9 @@
 package com.example.studentmanagement.Adapter.User;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.studentmanagement.Activity.EmployeeActivity;
 import com.example.studentmanagement.Models.User;
 import com.example.studentmanagement.R;
 import com.squareup.picasso.Picasso;
@@ -108,12 +112,17 @@ public class UserAdapter extends  RecyclerView.Adapter<UserAdapter.UserHolder> {
 
                 if (itemId == R.id.menu_sedetail_employee) {
                     // Handle option 1
+                    Intent intent = new Intent(context, EmployeeActivity.class);
+                    context.startActivity(intent);
                     return true;
                 } else if (itemId == R.id.menu_edit_employee) {
                     // Handle option 2
+                    Intent intent = new Intent(context, EmployeeActivity.class);
+                    context.startActivity(intent);
                     return true;
                 }else if (itemId == R.id.menu_delete_employee) {
                     // Handle option 2
+                    showDeleteConfirmationDialog();
                     return true;
                 } else {
                     // Add more conditions for each menu item
@@ -123,6 +132,22 @@ public class UserAdapter extends  RecyclerView.Adapter<UserAdapter.UserHolder> {
         });
 
         popupMenu.show();
+    }
+
+    private void showDeleteConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Confirm Delete");
+        builder.setMessage("Are you sure you want to delete this employee?");
+        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Handle the delete action here
+                // You can call a method to delete the employee or perform any other action
+                // For example: deleteEmployee();
+            }
+        });
+        builder.setNegativeButton("Cancel", null);
+        builder.show();
     }
 
 }

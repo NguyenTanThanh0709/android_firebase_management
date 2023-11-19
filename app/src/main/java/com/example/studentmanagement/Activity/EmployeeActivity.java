@@ -19,6 +19,7 @@ import com.example.studentmanagement.Fragment.FormEmployeeFragment;
 import com.example.studentmanagement.Fragment.HistoryLoginFragment;
 import com.example.studentmanagement.Fragment.MyProfileFragment;
 import com.example.studentmanagement.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Calendar;
@@ -35,6 +36,7 @@ public class EmployeeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employee);
         rePlaceFragment(new FormEmployeeFragment());
+
     }
 
 
@@ -56,7 +58,7 @@ public class EmployeeActivity extends AppCompatActivity {
                 FRAGMENT_CURRENT = FRAGMENT_FORM;
                 return true;
             }else {
-                onBackPressed();
+                finish();
                 return true;
             }
 
@@ -79,5 +81,15 @@ public class EmployeeActivity extends AppCompatActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content_employee,fragment);
         transaction.commit();
+    }
+
+    public void switchFragment() {
+        if (FRAGMENT_CURRENT == FRAGMENT_FORM) {
+            rePlaceFragment(new HistoryLoginFragment());
+            FRAGMENT_CURRENT = FRAGMENT_HIS;
+        } else {
+            rePlaceFragment(new FormEmployeeFragment());
+            FRAGMENT_CURRENT = FRAGMENT_FORM;
+        }
     }
 }
