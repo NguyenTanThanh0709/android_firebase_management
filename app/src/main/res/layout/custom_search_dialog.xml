@@ -1,0 +1,42 @@
+<!-- custom_search_dialog.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/SearchByName"
+        android:layout_margin="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Tìm kiếm theo tên"/>
+    <EditText
+        android:id="@+id/SearchByPhone"
+        android:layout_width="match_parent"
+        android:layout_margin="5dp"
+        android:layout_height="wrap_content"
+        android:hint="Tìm kiếm theo số điện thoại"/>
+    <EditText
+        android:id="@+id/SearchByEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:hint="Tìm kiếm theo email"/>
+    <EditText
+        android:id="@+id/SearchByStartLearn"
+        android:layout_width="match_parent"
+        android:layout_margin="5dp"
+        android:layout_height="wrap_content"
+        android:hint="Tìm kiếm theo năm nhập học"/>
+
+    <Spinner
+        android:id="@+id/spinnerSearchByClass"
+        android:layout_margin="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:prompt="@string/prompt_choose_class"/> <!-- Reference the string resource here -->
+
+</LinearLayout>

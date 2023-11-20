@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_sedetail_student"
+        android:title="Xem chi sinh viên" />
+    <item
+        android:id="@+id/menu_edit_student"
+        android:title="Chỉnh sửa sinh viên" />
+    <item
+        android:id="@+id/menu_delete_student"
+        android:title="Xóa sinh viên" />
+    <item
+        android:id="@+id/menu_certificate_student"
+        android:title="Xem chứng chỉ sinh viên" />
+</menu>

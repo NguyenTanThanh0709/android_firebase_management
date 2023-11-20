@@ -3,7 +3,7 @@
 
     <string name="open_nav">Open Navigation Drawer</string>
     <string name="close_nav">Close Navigation Drawer</string>
-
+    <string name="prompt_choose_class">Chọn lớp học</string>
     <string name="nav_home">Trang Chủ</string>
     <string name="nav_employee">Quản Lý Nhân Viên</string>
     <string name="nav_student">Quản Lý Học Sinh</string>
