@@ -53,4 +53,9 @@ public class Subject {
     public Subject() {
     }
 
+    @Override
+    public String toString() {
+        return name; // Display the name of the subject in the Spinner
+    }
+
 }

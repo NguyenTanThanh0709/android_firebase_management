@@ -3,19 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".Fragment.ClassFragment">
+    tools:context=".Fragment.student.ScoreSubjectFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/class_recycleview"
+        android:id="@+id/scoresubject_recycleview"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
     </androidx.recyclerview.widget.RecyclerView>
 
-    <!-- TODO: Update blank fragment layout -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/menu_add_class"
+        android:id="@+id/menu_add_scoresubject"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"

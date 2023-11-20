@@ -1,0 +1,34 @@
+<!-- dialog_add_edit_certificate.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- dialog_add_edit_certificate.xml -->
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Use a Spinner for subject selection -->
+        <Spinner
+            android:id="@+id/subject_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="Chọn Môn Học"/>
+
+
+        <!-- EditText for day learn -->
+        <EditText
+            android:id="@+id/daylearn_score_subject_add"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="Ngày bắt đầu học"/>
+    </LinearLayout>
+</LinearLayout>

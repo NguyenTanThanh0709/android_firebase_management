@@ -5,21 +5,12 @@ import java.util.List;
 public class Class_ {
 
     private String id;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
     private String name;
     private List<Student> students;
 
     public Class_(String name) {
 
         this.name = name;
-        // Khởi tạo students là null
         this.students = null;
     }
 
@@ -51,5 +42,13 @@ public class Class_ {
 
     public void setStudents(List<Student> students) {
         this.students = students;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

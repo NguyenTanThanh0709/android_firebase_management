@@ -11,6 +11,7 @@ import android.view.MenuItem;
 
 import com.example.studentmanagement.Fragment.student.CertificateFragment;
 import com.example.studentmanagement.Fragment.student.FormStudentFragment;
+import com.example.studentmanagement.Fragment.student.ScoreSubjectFragment;
 import com.example.studentmanagement.Fragment.user.FormEmployeeFragment;
 import com.example.studentmanagement.Fragment.user.HistoryLoginFragment;
 import com.example.studentmanagement.R;
@@ -41,7 +42,7 @@ public class StudentActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_backstudent) {
             // Handle "Quay lại" action
-            if(FRAGMENT_CURRENT == FRAGMENT_CER){
+            if(FRAGMENT_CURRENT == FRAGMENT_CER || FRAGMENT_CURRENT == FRAGMENT_SCORESUBJECT){
                 rePlaceFragment(new FormStudentFragment());
                 FRAGMENT_CURRENT = FRAGMENT_FORM;
                 return true;
@@ -62,7 +63,11 @@ public class StudentActivity extends AppCompatActivity {
             return true;
         }else if (item.getItemId() == R.id.action_view_subjectscore) {
 
-
+            if(FRAGMENT_CURRENT != FRAGMENT_SCORESUBJECT){
+                rePlaceFragment(new ScoreSubjectFragment());
+                FRAGMENT_CURRENT = FRAGMENT_SCORESUBJECT;
+                return true;
+            }
 
 
             return true;

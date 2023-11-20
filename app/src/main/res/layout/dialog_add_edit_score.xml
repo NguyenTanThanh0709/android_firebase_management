@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- dialog_add_edit_certificate.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- dialog_add_edit_certificate.xml -->
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <EditText
+            android:id="@+id/id_score_subject"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:hint="Mã môn đang học"/>
+
+        <EditText
+            android:id="@+id/name_score_subject"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:hint="Tên Môn Học"/>
+
+        <EditText
+            android:id="@+id/score_score_subject"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Điểm môn học"/>
+
+        <EditText
+            android:id="@+id/daylearn_score_subject"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Ngày bắt đầu học"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>

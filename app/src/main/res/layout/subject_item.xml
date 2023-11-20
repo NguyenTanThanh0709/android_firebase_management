@@ -1,0 +1,47 @@
+<!-- your_item_layout.xml -->
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:id="@+id/carview_subject"
+    android:layout_margin="10dp"
+    android:padding="16dp">
+
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_weight="2"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/idSubject"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ID: "/>
+
+    <TextView
+        android:id="@+id/nameSubject"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name: "/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imgImageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/user"/>
+</LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageView_more_subject"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginRight="15dp"
+
+        android:layout_gravity="end|center_vertical"
+        app:srcCompat="@drawable/baseline_delete_forever_24" />
+
+
+</androidx.cardview.widget.CardView>

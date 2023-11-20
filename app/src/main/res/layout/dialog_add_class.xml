@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- dialog_add_edit_certificate.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- dialog_add_edit_certificate.xml -->
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Mã lớp học(tự sinh)"
+            android:enabled="false"
+            />
+
+        <EditText
+            android:id="@+id/name_classadd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Tên lớp học"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>
