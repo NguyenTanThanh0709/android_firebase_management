@@ -1,4 +1,4 @@
-package com.example.studentmanagement.Fragment;
+package com.example.studentmanagement.Fragment.user;
 
 import android.os.Bundle;
 
@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.studentmanagement.Adapter.User.HistoryLoginAdapter;
-import com.example.studentmanagement.Adapter.User.UserAdapter;
 import com.example.studentmanagement.Models.HistoryLogin;
 import com.example.studentmanagement.Models.Role;
 import com.example.studentmanagement.Models.User;

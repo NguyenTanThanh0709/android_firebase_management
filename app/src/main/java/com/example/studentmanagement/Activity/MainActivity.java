@@ -6,10 +6,10 @@ import android.widget.Toast;
 
 
 import com.example.studentmanagement.Fragment.ClassFragment;
-import com.example.studentmanagement.Fragment.EmployeeFragment;
+import com.example.studentmanagement.Fragment.user.EmployeeFragment;
 import com.example.studentmanagement.Fragment.HomeFragment;
 import com.example.studentmanagement.Fragment.MyProfileFragment;
-import com.example.studentmanagement.Fragment.StudentFragment;
+import com.example.studentmanagement.Fragment.student.StudentFragment;
 import com.example.studentmanagement.Fragment.SubjectFragment;
 import com.example.studentmanagement.R;
 import com.google.android.material.navigation.NavigationView;

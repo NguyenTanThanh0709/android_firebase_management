@@ -1,4 +1,4 @@
-package com.example.studentmanagement.Fragment;
+package com.example.studentmanagement.Fragment.student;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

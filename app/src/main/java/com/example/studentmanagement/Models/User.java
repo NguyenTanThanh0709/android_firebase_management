@@ -16,6 +16,7 @@ public class User {
     private String password;
 
 
+
     private Map<String, HistoryLogin> historyLogins;
 
     public Map<String, HistoryLogin> getHistoryLogins() {

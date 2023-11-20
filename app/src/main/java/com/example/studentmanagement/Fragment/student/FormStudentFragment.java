@@ -1,4 +1,4 @@
-package com.example.studentmanagement.Fragment;
+package com.example.studentmanagement.Fragment.student;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
@@ -20,10 +20,10 @@ import java.util.Calendar;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link FormEmployeeFragment#newInstance} factory method to
+ * Use the {@link FormStudentFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FormEmployeeFragment extends Fragment {
+public class FormStudentFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -33,10 +33,9 @@ public class FormEmployeeFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
     private TextInputEditText editTextDate;
 
-    public FormEmployeeFragment() {
+    public FormStudentFragment() {
         // Required empty public constructor
     }
 
@@ -46,11 +45,11 @@ public class FormEmployeeFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment FormEmployeeFragment.
+     * @return A new instance of fragment FormStudentFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static FormEmployeeFragment newInstance(String param1, String param2) {
-        FormEmployeeFragment fragment = new FormEmployeeFragment();
+    public static FormStudentFragment newInstance(String param1, String param2) {
+        FormStudentFragment fragment = new FormStudentFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -71,8 +70,7 @@ public class FormEmployeeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_form_employee, container, false);
-
+        View view =  inflater.inflate(R.layout.fragment_form_student, container, false);
         Spinner spinnerRole = view.findViewById(R.id.spinnerRole);
 
         String[] roles = {"ADMIN", "MANAGER", "EMPLOYEE"};

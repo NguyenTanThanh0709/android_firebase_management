@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- dialog_add_edit_certificate.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- dialog_add_edit_certificate.xml -->
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <EditText
+            android:id="@+id/editTextCertificateName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Certificate Name"/>
+
+        <EditText
+            android:id="@+id/editTextStartCertificate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Start Date (YYYY-MM-DD)"/>
+
+        <EditText
+            android:id="@+id/editTextEndCertificate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="End Date (YYYY-MM-DD)"/>
+
+        <EditText
+            android:id="@+id/editTextOverallScore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Overall Score"/>
+
+        <EditText
+            android:id="@+id/editTextDescribe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Description"/>
+
+        <EditText
+            android:id="@+id/editTextLink"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Link"/>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,4 +1,4 @@
-package com.example.studentmanagement.Fragment;
+package com.example.studentmanagement.Fragment.student;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,13 +13,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.studentmanagement.Activity.EmployeeActivity;
+import com.example.studentmanagement.Activity.StudentActivity;
 import com.example.studentmanagement.Adapter.Student.StudentAdapter;
-import com.example.studentmanagement.Adapter.User.UserAdapter;
 import com.example.studentmanagement.Models.Class_;
 import com.example.studentmanagement.Models.Student;
-import com.example.studentmanagement.Models.User;
 import com.example.studentmanagement.R;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +45,9 @@ public class StudentFragment extends Fragment  implements CustomSortDialogFragme
 
     private Button sort_student;
     private Button find_student;
+    private  Button add_student;
+    private  Button export_list_student;
+    private  Button import_list_student;
 
     public StudentFragment() {
         // Required empty public constructor
@@ -92,6 +93,12 @@ public class StudentFragment extends Fragment  implements CustomSortDialogFragme
 
         sort_student = view.findViewById(R.id.sort_student);
         find_student = view.findViewById(R.id.find_student);
+
+        add_student = view.findViewById(R.id.add_student);
+        import_list_student = view.findViewById(R.id.import_list_student);
+        export_list_student = view.findViewById(R.id.export_list_student);
+
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         studentList = new ArrayList<>();
         studentAdapter = new StudentAdapter(studentList, getContext());
@@ -115,6 +122,14 @@ public class StudentFragment extends Fragment  implements CustomSortDialogFragme
             @Override
             public void onClick(View view) {
                 showSearchDialog();
+            }
+        });
+
+        add_student.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), StudentActivity.class);
+                startActivity(intent);
             }
         });
     }

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_margin="7dp"
     android:padding="5dp"
-    tools:context=".Fragment.user.FormEmployeeFragment">
+    tools:context=".Fragment.student.FormStudentFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,15 +30,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <EditText
-                android:id="@+id/name_employee"
+                android:id="@+id/name_student"
                 android:layout_width="match_parent"
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_height="wrap_content"
-                android:hint="Tên của nhân viên" />
+                android:hint="Tên của học sinh" />
 
             <EditText
-                android:id="@+id/phone_employee"
+                android:id="@+id/phone_student"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
@@ -65,7 +65,7 @@
             android:textColor="#0000FF"
             android:layout_marginEnd="8dp"/>
         <EditText
-            android:id="@+id/email_employee"
+            android:id="@+id/email_student"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
@@ -97,7 +97,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="none"
-                android:hint="Ngày sinh của nhân viên"
+                android:hint="Ngày sinh của học sinh"
                 android:focusable="false"
                 android:onClick="showDatePickerDialog" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -144,7 +144,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Role:                "
+            android:text="Lớp:                 "
             android:textStyle="bold"
             android:textSize="15dp"
             android:textColor="#0000FF"
@@ -167,7 +167,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Mật khẩu:        "
+            android:text="Năm nhập học:"
             android:textStyle="bold"
             android:textSize="15dp"
             android:textColor="#0000FF"
@@ -175,10 +175,33 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/password_employee"
+            android:id="@+id/startSchool_student"
 
             android:inputType=""
-            android:hint="Mật khẩu" />
+            android:hint="Năm nhập học" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Năm kết thúc:  "
+            android:textStyle="bold"
+            android:textSize="15dp"
+            android:textColor="#0000FF"
+            android:layout_marginEnd="8dp"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/endSchool_student"
+
+            android:inputType=""
+            android:hint="Năm nhập học" />
     </LinearLayout>
 
     <!-- Các trường khác tùy thuộc vào yêu cầu của bạn -->

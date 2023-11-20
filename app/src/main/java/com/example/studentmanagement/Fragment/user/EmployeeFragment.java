@@ -1,20 +1,17 @@
-package com.example.studentmanagement.Fragment;
+package com.example.studentmanagement.Fragment.user;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.studentmanagement.Activity.EmployeeActivity;
-import com.example.studentmanagement.Activity.MainActivity;
 import com.example.studentmanagement.Adapter.User.UserAdapter;
 import com.example.studentmanagement.Models.Role;
 import com.example.studentmanagement.Models.User;

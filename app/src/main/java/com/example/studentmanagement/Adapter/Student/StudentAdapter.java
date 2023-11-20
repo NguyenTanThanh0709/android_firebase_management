@@ -17,6 +17,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.studentmanagement.Activity.EmployeeActivity;
+import com.example.studentmanagement.Activity.StudentActivity;
 import com.example.studentmanagement.Adapter.User.UserAdapter;
 import com.example.studentmanagement.Models.Student;
 import com.example.studentmanagement.Models.User;
@@ -129,18 +130,19 @@ public class StudentAdapter extends  RecyclerView.Adapter<StudentAdapter.Student
 
                 if (itemId == R.id.menu_sedetail_student) {
                     // Handle option 1
+                    Intent intent = new Intent(context, StudentActivity.class);
+                    context.startActivity(intent);
 
                     return true;
                 } else if (itemId == R.id.menu_edit_student) {
                     // Handle option 2
+                    Intent intent = new Intent(context, StudentActivity.class);
+                    context.startActivity(intent);
 
                     return true;
                 }else if (itemId == R.id.menu_delete_student) {
                     // Handle option 2
                     showDeleteConfirmationDialog();
-                    return true;
-                }else if (itemId == R.id.menu_certificate_student) {
-                    // Handle option 2
                     return true;
                 } else {
                     // Add more conditions for each menu item
@@ -167,4 +169,5 @@ public class StudentAdapter extends  RecyclerView.Adapter<StudentAdapter.Student
         builder.setNegativeButton("Cancel", null);
         builder.show();
     }
+
 }
