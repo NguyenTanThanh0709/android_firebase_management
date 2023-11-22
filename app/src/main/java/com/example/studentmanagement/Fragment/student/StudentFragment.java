@@ -141,6 +141,7 @@ public class StudentFragment extends Fragment  implements CustomSortDialogFragme
         export_list_student.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ExportFileStudent.exportToExcel(studentList_,requireContext());
 
             }
         });
@@ -258,7 +259,10 @@ public class StudentFragment extends Fragment  implements CustomSortDialogFragme
                 // Now you can use the selectedFileUri to read the Excel file
                 try {
                     InputStream inputStream = getInputStreamFromUri(selectedFileUri);
+                    Toast.makeText(getActivity(),selectedFileUri.toString(),Toast.LENGTH_SHORT).show();
+                    Log.d("uri", selectedFileUri.toString());
                     List<StudentDTO> list = ReadFIleStudent.readExcelFile(getActivity(), inputStream);
+
                     for (StudentDTO studentDTO: list){
                         Log.d("StudentDTO", studentDTO.toString());
                     }
