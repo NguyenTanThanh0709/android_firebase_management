@@ -14,8 +14,28 @@ public class User {
     private String avatar;
     private Role role;
     private String password;
+    private Boolean sex;
 
+    public User(String name, String phoneNumber, String email, String birthDay, Boolean status, String avatar, Role role, String password, Boolean sex, Map<String, HistoryLogin> historyLogins) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.birthDay = birthDay;
+        this.status = status;
+        this.avatar = avatar;
+        this.role = role;
+        this.password = password;
+        this.sex = sex;
+        this.historyLogins = historyLogins;
+    }
 
+    public Boolean getSex() {
+        return sex;
+    }
+
+    public void setSex(Boolean sex) {
+        this.sex = sex;
+    }
 
     private Map<String, HistoryLogin> historyLogins;
 

@@ -109,9 +109,9 @@ public class CertificateFragment extends Fragment{
     }
 
     public  void getCertificate(){
-        Certificate certificate1 = new Certificate("Certificate 1", "2022-01-01", "2022-12-31", 90.5, "Good performance", "https://example.com/certificate1");
-        Certificate certificate2 = new Certificate("Certificate 2", "2022-02-01", "2022-11-30", 88.0, "Excellent performance", "https://example.com/certificate2");
-        Certificate certificate3 = new Certificate("Certificate 3", "2022-03-01", "2022-10-31", 95.5, "Outstanding performance", "https://example.com/certificate3");
+        Certificate certificate1 = new Certificate("Certificate 1", "2022-01-01", "2022-12-31", 90.5, "Good performance", "https://docs.google.com/document/d/1b0wfxctvcoBtoG1xa0frcf4DVhSiCnyW7TLkFp6b5LM/edit");
+        Certificate certificate2 = new Certificate("Certificate 2", "2022-02-01", "2022-11-30", 88.0, "Excellent performance", "https://docs.google.com/document/d/1b0wfxctvcoBtoG1xa0frcf4DVhSiCnyW7TLkFp6b5LM/edit");
+        Certificate certificate3 = new Certificate("Certificate 3", "2022-03-01", "2022-10-31", 95.5, "Outstanding performance", "https://docs.google.com/document/d/1b0wfxctvcoBtoG1xa0frcf4DVhSiCnyW7TLkFp6b5LM/edit");
 
         certificateList.add(certificate1);
         certificateList.add(certificate2);

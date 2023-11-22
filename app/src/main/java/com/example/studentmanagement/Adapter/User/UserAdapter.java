@@ -56,11 +56,13 @@ public class UserAdapter extends  RecyclerView.Adapter<UserAdapter.UserHolder> {
     public void onBindViewHolder(@NonNull UserHolder holder, int position) {
         User user =  list.get(position);
         // Use Picasso to load the image into the ImageView
-        Picasso.get()
+
+        Picasso.with(context)
                 .load(user.getAvatar())
-                .placeholder(R.drawable.user)
+                .placeholder(R.mipmap.ic_launcher)
                 .error(R.drawable.user)
                 .into(holder.imageView);
+
 
         holder.email.setText(user.getEmail());
         holder.name.setText(user.getName());

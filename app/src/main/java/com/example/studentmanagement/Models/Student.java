@@ -8,13 +8,48 @@ public class Student {
     private  String phoneNumber;
     private String email;
     private String birthDay;
+    private Boolean sex;
+
+    public Boolean getSex() {
+        return sex;
+    }
+
+    public void setSex(Boolean sex) {
+        this.sex = sex;
+    }
+
     private Boolean status;
     private String avatar;
     private String startSchool;
     private String endSchool;
+    private Double GPA;
+
+    public Student(String name, String phoneNumber, String email, String birthDay, Boolean sex, Boolean status, String avatar, String startSchool, String endSchool, Double GPA, Class_ class_) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.birthDay = birthDay;
+        this.sex = sex;
+        this.status = status;
+        this.avatar = avatar;
+        this.startSchool = startSchool;
+        this.endSchool = endSchool;
+        this.GPA = GPA;
+        this.class_ = class_;
+    }
+
+    public Double getGPA() {
+        return GPA;
+    }
+
+    public void setGPA(Double GPA) {
+        this.GPA = GPA;
+    }
+
     private List<ScoreSubject> scoreSubjects;
     private List<Certificate> certificates;
     private Class_ class_;
+
 
     public Student(String name, String phoneNumber, String email, String birthDay, Boolean status, String avatar, String startSchool, String endSchool, Class_ class_) {
         this.name = name;
@@ -25,6 +60,23 @@ public class Student {
         this.avatar = avatar;
         this.startSchool = startSchool;
         this.endSchool = endSchool;
+        this.class_ = class_;
+        this.GPA = 0.0;
+    }
+
+    public Student(String name, String phoneNumber, String email, String birthDay, Boolean sex, Boolean status, String avatar, String startSchool, String endSchool, List<ScoreSubject> scoreSubjects, List<Certificate> certificates, Class_ class_) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.birthDay = birthDay;
+        this.sex = sex;
+        this.status = status;
+        this.GPA = 0.0;
+        this.avatar = avatar;
+        this.startSchool = startSchool;
+        this.endSchool = endSchool;
+        this.scoreSubjects = scoreSubjects;
+        this.certificates = certificates;
         this.class_ = class_;
     }
 
@@ -142,6 +194,22 @@ public class Student {
         this.certificates = certificates;
     }
 
-
-
+    @Override
+    public String toString() {
+        return "Student{" +
+                "name='" + name + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", email='" + email + '\'' +
+                ", birthDay='" + birthDay + '\'' +
+                ", sex=" + sex +
+                ", status=" + status +
+                ", avatar='" + avatar + '\'' +
+                ", startSchool='" + startSchool + '\'' +
+                ", endSchool='" + endSchool + '\'' +
+                ", GPA=" + GPA +
+                ", scoreSubjects=" + scoreSubjects +
+                ", certificates=" + certificates +
+                ", class_=" + class_ +
+                '}';
+    }
 }

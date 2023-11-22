@@ -8,10 +8,9 @@ public class Certificate {
     private String name;
     private String startCertificate;
     private String endCertificate;
-    private double overalScore;
+    private Double overalScore;
     private String describe;
     private String link;
-
 
     public String getId() {
         return id;

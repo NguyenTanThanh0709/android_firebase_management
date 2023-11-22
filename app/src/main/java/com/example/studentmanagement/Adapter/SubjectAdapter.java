@@ -78,11 +78,12 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectH
         holder.idSubject.setText("Mã Môn Học: "+subject.getId());
         holder.nameSubject.setText("Tên Môn Học: " +subject.getName());
 
-        Picasso.get()
+        Picasso.with(context)
                 .load(subject.getImg())
-                .placeholder(R.drawable.user)
+                .placeholder(R.mipmap.ic_launcher)
                 .error(R.drawable.user)
                 .into(holder.imgImageView);
+
 
         holder.imageView_more_subject.setOnClickListener(new View.OnClickListener() {
             @Override

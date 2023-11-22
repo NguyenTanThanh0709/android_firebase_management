@@ -68,11 +68,12 @@ public class StudentAdapter extends  RecyclerView.Adapter<StudentAdapter.Student
     public void onBindViewHolder(@NonNull StudentHolder holder, int position) {
         Student user =  list.get(position);
 
-        Picasso.get()
+        Picasso.with(context)
                 .load(user.getAvatar())
-                .placeholder(R.drawable.user)
+                .placeholder(R.mipmap.ic_launcher)
                 .error(R.drawable.user)
                 .into(holder.imageView);
+
         holder.birth.setText("Ngày sinh: " + user.getBirthDay());
         holder.name.setText("Tên: " + user.getName());
         holder.phone.setText("SĐT: " + user.getPhoneNumber());

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +20,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.studentmanagement.Activity.StudentActivity;
+import com.example.studentmanagement.Activity.WebViewActivity;
 import com.example.studentmanagement.Fragment.student.CertificateFragment;
 import com.example.studentmanagement.Models.Certificate;
 import com.example.studentmanagement.Models.Student;
@@ -75,6 +77,15 @@ public class CertificateAdapter extends  RecyclerView.Adapter<CertificateAdapter
         holder.end_Certificate.setText("Ngày hết hạn của chứng chỉ: " + certificate.getEndCertificate());
         holder.overalScore_cerficate.setText("Overall score: "+certificate.getOveralScore());
         holder.link_certificate.setText(certificate.getLink());
+
+        holder.link_certificate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openLinkInApp(certificate.getLink());
+            }
+        });
+
+
 
         holder.imageView_more_certificate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -192,6 +203,16 @@ public class CertificateAdapter extends  RecyclerView.Adapter<CertificateAdapter
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    private void openLinkInApp(String url) {
+        // You can handle the click event here, for example, by navigating to a new activity
+        // or fragment to display the web content within the app.
+
+        // For example, assuming you have a WebViewActivity:
+        Intent webViewIntent = new Intent(context, WebViewActivity.class);
+        webViewIntent.putExtra("url", url);
+        context.startActivity(webViewIntent);
     }
 
 }
