@@ -23,6 +23,7 @@ import com.example.studentmanagement.Fragment.student.FormStudentFragment;
 import com.example.studentmanagement.Fragment.student.ScoreSubjectFragment;
 import com.example.studentmanagement.R;
 import com.example.studentmanagement.dto.CertificateDTO;
+import com.example.studentmanagement.utils.File.ExportFileCertificate;
 import com.example.studentmanagement.utils.File.ReadFileCertificate;
 
 import java.io.FileInputStream;
@@ -90,9 +91,7 @@ public class StudentActivity extends AppCompatActivity {
         }
         else if (item.getItemId() == R.id.action_view_export_certificate) {
 
-
-
-
+            ExportFileCertificate.exportToExcel(null,this);
             return true;
         }
         else if (item.getItemId() == R.id.action_view_import_certificate) {

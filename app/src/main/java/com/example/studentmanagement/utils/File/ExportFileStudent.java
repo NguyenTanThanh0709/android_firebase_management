@@ -29,11 +29,12 @@ public class ExportFileStudent {
         // Create a new workbook
         Workbook workbook = new XSSFWorkbook();
 
-        // Create a new sheet
+
         Sheet sheet = workbook.createSheet("Students");
 
-        // Create header row
+
         Row headerRow = sheet.createRow(0);
+
         headerRow.createCell(0).setCellValue("Tên học sinh");
         headerRow.createCell(1).setCellValue("Giới tính");
         headerRow.createCell(2).setCellValue("Số điện thoại");
@@ -89,7 +90,7 @@ public class ExportFileStudent {
 
         // Get the external storage directory
         File externalFilesDir = context.getExternalFilesDir(null);
-        File file = new File(externalFilesDir, fileName);
+        File file = new File("/storage/self/primary/Download/", fileName);
         FileOutputStream outputStream = null;
         try {
             outputStream = new FileOutputStream(file);
