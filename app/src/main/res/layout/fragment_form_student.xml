@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -113,6 +118,38 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Giới tính:        "
+            android:textStyle="bold"
+            android:textSize="15dp"
+            android:textColor="#0000FF"
+            android:layout_marginEnd="8dp"/>
+
+        <!-- First RadioButton -->
+        <RadioButton
+            android:id="@+id/radioFemale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Female" />
+
+        <!-- Second RadioButton -->
+        <RadioButton
+            android:id="@+id/radioMale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Male" />
+    </RadioGroup>
+
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Trạng thái:      "
             android:textStyle="bold"
             android:textSize="15dp"
@@ -156,6 +193,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="GPA:                  "
+            android:textStyle="bold"
+            android:textSize="15dp"
+            android:textColor="#0000FF"
+            android:layout_marginEnd="8dp"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/gpa_student"
+
+            android:inputType=""
+            android:hint="Điểm trung binhd" />
     </LinearLayout>
 
     <LinearLayout
@@ -237,3 +296,4 @@
 
 
 </LinearLayout>
+</ScrollView>

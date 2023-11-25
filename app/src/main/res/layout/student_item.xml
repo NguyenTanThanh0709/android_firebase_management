@@ -48,6 +48,13 @@
                 android:layout_height="wrap_content"
                 android:padding="4dp"
                 android:text="Math Class" />
+
+            <TextView
+                android:id="@+id/sex_student"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:text="Giới tính" />
             <TextView
                 android:id="@+id/birth_student"
                 android:layout_width="wrap_content"

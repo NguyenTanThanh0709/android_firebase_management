@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -35,50 +40,266 @@
             android:src="@drawable/baseline_photo_camera_24" />
     </RelativeLayout>
 
-    <EditText
-        android:id="@+id/editTextName"
+    <!-- Name Group -->
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Name"
-        android:inputType="textPersonName"
         android:layout_marginTop="8dp"
-        android:enabled="false"/>
+        android:background="@drawable/rounded_corners">
 
-    <EditText
-        android:id="@+id/editTextPhoneNumber"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Phone Number"
-        android:inputType="phone"
-        android:layout_marginTop="8dp"
-        android:enabled="false"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
 
-    <EditText
-        android:id="@+id/editTextEmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Email"
-        android:inputType="textEmailAddress"
-        android:layout_marginTop="8dp"
-        android:enabled="false"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:textStyle="bold"
+                android:textSize="18sp"/>
 
-    <EditText
-        android:id="@+id/editTextBirthDay"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Birth Day"
-        android:inputType="date"
-        android:layout_marginTop="8dp"
-        android:enabled="false"/>
+            <EditText
+                android:id="@+id/editTextName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter your name"
+                android:inputType="textPersonName"
+                android:enabled="false"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
-    <EditText
-        android:id="@+id/editTextPassword"
+    <!-- Gender Group -->
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Password"
-        android:inputType="textPassword"
         android:layout_marginTop="8dp"
-        android:enabled="false"/>
+        android:background="@drawable/rounded_corners">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Select Gender"
+                android:textStyle="bold"
+                android:textSize="18sp"/>
+
+            <RadioGroup
+                android:id="@+id/radioGroupSex"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:enabled="false">
+
+                <RadioButton
+                    android:id="@+id/radioButtonMale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Male"/>
+
+                <RadioButton
+                    android:id="@+id/radioButtonFemale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Female"/>
+            </RadioGroup>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+
+    <!-- Phone Number Group -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rounded_corners">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Phone Number"
+                android:textStyle="bold"
+                android:textSize="18sp"/>
+
+            <EditText
+                android:id="@+id/editTextPhoneNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter your phone number"
+                android:inputType="phone"
+                android:layout_marginTop="8dp"
+                android:enabled="false"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Email Group -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rounded_corners">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Email"
+                android:textStyle="bold"
+                android:textSize="18sp"/>
+
+            <EditText
+                android:id="@+id/editTextEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter your email"
+                android:inputType="textEmailAddress"
+                android:layout_marginTop="8dp"
+                android:enabled="false"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Birth Day Group -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rounded_corners">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Birth Day"
+                android:textStyle="bold"
+                android:textSize="18sp"/>
+
+            <EditText
+                android:id="@+id/editTextBirthDay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Select your birth day"
+                android:inputType="date"
+                android:layout_marginTop="8dp"
+                android:enabled="false"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Status Group -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rounded_corners">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Trạng thái"
+                android:textStyle="bold"
+                android:textSize="18sp"/>
+
+            <EditText
+                android:id="@+id/editTextStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter your status"
+                android:inputType="text"
+                android:layout_marginTop="8dp"
+                android:enabled="false"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Role Group -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rounded_corners">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Role"
+                android:textStyle="bold"
+                android:textSize="18sp"/>
+
+            <EditText
+                android:id="@+id/editTextRole"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter your role"
+                android:inputType="text"
+                android:layout_marginTop="8dp"
+                android:enabled="false"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Password Group -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rounded_corners">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Password"
+                android:textStyle="bold"
+                android:textSize="18sp"/>
+
+            <EditText
+                android:id="@+id/editTextPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter your password"
+                android:inputType="textPassword"
+                android:layout_marginTop="8dp"
+                android:enabled="false"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+
 
     <!-- Add more EditText fields for other properties -->
 
@@ -91,3 +312,4 @@
         android:background="@color/colorPrimary"
         android:textColor="@android:color/white"/>
 </LinearLayout>
+</ScrollView>

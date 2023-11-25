@@ -113,6 +113,37 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Giới tính:        "
+            android:textStyle="bold"
+            android:textSize="15dp"
+            android:textColor="#0000FF"
+            android:layout_marginEnd="8dp"/>
+
+        <!-- First RadioButton -->
+        <RadioButton
+            android:id="@+id/radioFemale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Female" />
+
+        <!-- Second RadioButton -->
+        <RadioButton
+            android:id="@+id/radioMale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Male" />
+    </RadioGroup>
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Trạng thái:      "
             android:textStyle="bold"
             android:textSize="15dp"
@@ -195,7 +226,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_margin="8dp"
-            android:text="Submit"
+            android:text="Xác nhận"
             android:background="@drawable/rounded_button_primary"
             android:textColor="#FFFFFF"
             android:onClick="onSubmitClick" />

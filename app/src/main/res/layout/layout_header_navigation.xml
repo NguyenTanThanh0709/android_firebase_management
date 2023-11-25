@@ -5,7 +5,18 @@
     android:padding="40dp"
     android:gravity="bottom"
     android:orientation="vertical"
-    android:layout_height="250dp">
+    android:layout_height="310dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TRƯỜNG THCS NGUYỄN VĂN BÉ"
+        android:textStyle="bold"
+        android:layout_marginTop="4dp"
+        android:layout_margin="6dp"
+        android:textSize="24dp"
+        android:textColor="@color/purple_700"/>
+
     <ImageView
         android:layout_width="80dp"
         android:layout_height="80dp"
@@ -25,5 +36,13 @@
         android:layout_marginTop="2dp"
         android:textSize="16sp"
         android:textColor="@color/white"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Role"
+        android:layout_marginTop="2dp"
+        android:textSize="16sp"
+        android:textColor="@color/white"/>
+
 
 </LinearLayout>
