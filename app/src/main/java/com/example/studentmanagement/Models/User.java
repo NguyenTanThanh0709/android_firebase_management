@@ -1,5 +1,7 @@
 package com.example.studentmanagement.Models;
 
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +17,9 @@ public class User {
     private Role role;
     private String password;
     private Boolean sex;
+
+    private Map<String, HistoryLogin> historyLogins;
+
 
     public User(String name, String phoneNumber, String email, String birthDay, Boolean status, String avatar, Role role, String password, Boolean sex, Map<String, HistoryLogin> historyLogins) {
         this.name = name;
@@ -37,7 +42,6 @@ public class User {
         this.sex = sex;
     }
 
-    private Map<String, HistoryLogin> historyLogins;
 
     public Map<String, HistoryLogin> getHistoryLogins() {
         return historyLogins;
@@ -63,6 +67,7 @@ public class User {
         this.avatar = avatar;
         this.role = role;
         this.password = password;
+        this.sex = true;
     }
 
     public User() {
@@ -121,6 +126,38 @@ public class User {
         return role;
     }
 
+    private static Role convertToUserRole(String roleString) {
+        if ("ADMIN".equals(roleString)) {
+            return Role.ADMIN;
+        } else if ("MANAGER".equals(roleString)) {
+            return Role.MANAGER;
+        } else if ("EMPLOYEE".equals(roleString)) {
+            return Role.EMPLOYEE;
+        } else {
+            // Handle unknown role or return a default value
+            return Role.EMPLOYEE;
+        }
+    }
+
+
+    public static  User fromQueryDocumentSnapshot(QueryDocumentSnapshot document) {
+        String name = document.getString("name");
+        String phoneNumber = document.getString("phoneNumber");
+        String email = document.getString("email");
+        String birthDay = document.getString("birthDay");
+        Boolean status = document.getBoolean("status");
+        String avatar = document.getString("avatar");
+        String roleString = document.getString("role"); // Đảm bảo rằng role lưu trong Firestore là một chuỗi
+        Role role = convertToUserRole(roleString);
+        String password = document.getString("password");
+        Boolean sex = document.getBoolean("sex");
+
+        // Khởi tạo đối tượng User từ các giá trị thu được
+        User user = new User(name, phoneNumber, email, birthDay, status, avatar, role, password, sex);
+
+        return user;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -132,7 +169,20 @@ public class User {
                 ", avatar='" + avatar + '\'' +
                 ", role=" + role +
                 ", password='" + password + '\'' +
+                ", sex=" + sex +
                 '}';
+    }
+
+    public User(String name, String phoneNumber, String email, String birthDay, Boolean status, String avatar, Role role, String password, Boolean sex) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.birthDay = birthDay;
+        this.status = status;
+        this.avatar = avatar;
+        this.role = role;
+        this.password = password;
+        this.sex = sex;
     }
 
     public void setRole(Role role) {

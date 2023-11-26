@@ -22,6 +22,23 @@ public class HistoryLoginAdapter extends RecyclerView.Adapter<HistoryLoginAdapte
 
     List<HistoryLogin> list;
     private Context context;
+    private String name;
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public HistoryLoginAdapter(List<HistoryLogin> list, Context context) {
         this.list = list;
@@ -56,6 +73,8 @@ public class HistoryLoginAdapter extends RecyclerView.Adapter<HistoryLoginAdapte
     @Override
     public void onBindViewHolder(@NonNull HistoryLoginHolder holder, int position) {
         HistoryLogin user_ =  list.get(position);
+
+        holder.name.setText(name);
 
         holder.idaddress.setText(user_.getIdAdress());
         holder.locate.setText(user_.getLocate());

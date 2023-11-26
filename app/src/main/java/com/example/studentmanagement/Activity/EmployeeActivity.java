@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,10 +22,27 @@ public class EmployeeActivity extends AppCompatActivity {
 
     private static  int FRAGMENT_CURRENT = FRAGMENT_FORM;
 
+    private String email;
+    private String type;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employee);
+
+        Intent intent = getIntent();
+        if (intent != null) {
+             email = intent.getStringExtra("email");
+             type = intent.getStringExtra("type");
+
+            // Now you have the email and type values, you can use them as needed
+            Log.d("EmployeeActivity", "Email: " + email);
+            Log.d("EmployeeActivity", "Type: " + type);
+
+            // Add your logic based on the email and type values
+        }
+
+
         rePlaceFragment(new FormEmployeeFragment());
 
     }
@@ -67,6 +86,10 @@ public class EmployeeActivity extends AppCompatActivity {
     }
 
     private  void rePlaceFragment(Fragment fragment){
+        Bundle bundle = new Bundle();
+        bundle.putString("email", email); // Replace "value" with the actual email value
+        bundle.putString("type", type); // Replace "value" with the actual type value
+        fragment.setArguments(bundle);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content_employee,fragment);
         transaction.commit();

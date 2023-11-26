@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +17,15 @@ import com.example.studentmanagement.Adapter.User.UserAdapter;
 import com.example.studentmanagement.Models.Role;
 import com.example.studentmanagement.Models.User;
 import com.example.studentmanagement.R;
+import com.example.studentmanagement.utils.DatabaseManagerUser;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,6 +48,7 @@ public class EmployeeFragment extends Fragment {
     private List<User> userList;
 
     private FloatingActionButton menu_add_employee;
+    private DatabaseManagerUser databaseManagerUser;
 
 
 
@@ -84,6 +91,9 @@ public class EmployeeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_employee, container, false);
+
+        databaseManagerUser = new DatabaseManagerUser();
+
         recyclerView = view.findViewById(R.id.employee_recycleview);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         userList = new ArrayList<>();
@@ -99,15 +109,30 @@ public class EmployeeFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
-
         return view;
     }
 
     private void getListUser(){
-        userList.add(new User("String" , "String" , "String" , "String" , true , "https://daotao.muasamcong.gov.vn/learning/File/User/Avt/avatar-default.png" , Role.EMPLOYEE , "String" ));
-        userList.add(new User("String" , "String" , "String" , "String" , true , "https://daotao.muasamcong.gov.vn/learning/File/User/Avt/avatar-default.png" , Role.EMPLOYEE , "String" ));
-        userList.add(new User("String" , "String" , "String" , "String" , true , "https://daotao.muasamcong.gov.vn/learning/File/User/Avt/avatar-default.png" , Role.EMPLOYEE , "String" ));
+        Task<QuerySnapshot> task = databaseManagerUser.getAllUsers();
+        List<User> tempUserList = new ArrayList<>();
+
+        task.addOnSuccessListener(queryDocumentSnapshots -> {
+            // Xử lý kết quả thành công
+            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                User user = User.fromQueryDocumentSnapshot(document);
+                Log.d("User", user.toString());
+                tempUserList.add(user);
+            }
+            // Cập nhật userList khi có dữ liệu mới từ Firestore
+            userList.clear();
+            userList.addAll(tempUserList);
+            userAdapter.notifyDataSetChanged();
+        }).addOnFailureListener(e -> {
+            // Xử lý lỗi
+            Log.e("Firestore", "Error getting users", e);
+        });
+
+
     }
 
 }

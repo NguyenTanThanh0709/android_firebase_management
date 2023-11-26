@@ -101,6 +101,7 @@ public class StudentAdapter extends  RecyclerView.Adapter<StudentAdapter.Student
         private TextView phone;
         private TextView class_;
         private TextView birth;
+        private TextView sex_student;
         private TextView startlearnyearn_student;
         private ImageView imageView_more;
 
@@ -113,6 +114,7 @@ public class StudentAdapter extends  RecyclerView.Adapter<StudentAdapter.Student
             phone = itemView.findViewById(R.id.phone_student);
             birth = itemView.findViewById(R.id.birth_student);
             class_ = itemView.findViewById(R.id.class_student);
+            sex_student = itemView.findViewById(R.id.sex_student);
             startlearnyearn_student = itemView.findViewById(R.id.startlearnyearn_student);
 
             imageView_more = itemView.findViewById(R.id.imageView_more_student);

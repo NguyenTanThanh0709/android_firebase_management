@@ -1,5 +1,7 @@
 package com.example.studentmanagement.Activity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -11,8 +13,14 @@ import com.example.studentmanagement.Fragment.HomeFragment;
 import com.example.studentmanagement.Fragment.MyProfileFragment;
 import com.example.studentmanagement.Fragment.student.StudentFragment;
 import com.example.studentmanagement.Fragment.SubjectFragment;
+import com.example.studentmanagement.Models.User;
 import com.example.studentmanagement.R;
+import com.example.studentmanagement.utils.DatabaseManagerUser;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -23,8 +31,10 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -121,12 +131,45 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
 
         }else  if(id == R.id.nav_logout){
-
+            UpdateHistoryLogin();
            Toast.makeText(MainActivity.this, "Log Out", Toast.LENGTH_SHORT).show();
             finish();
         }
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void UpdateHistoryLogin(){
+        DatabaseManagerUser databaseManagerUser = new DatabaseManagerUser();
+
+        SharedPreferences preferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        String idHistoryLogin = preferences.getString("id_historylogin", "");
+
+        String userJson = preferences.getString("user", "");
+
+        Date currentDate = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        String formattedDate = dateFormat.format(currentDate);
+        if (!userJson.isEmpty()) {
+            Gson gson = new Gson();
+            User user = gson.fromJson(userJson, User.class);
+
+            Task<Void> updateTask = databaseManagerUser.updateHistoryLoginStartLogout(user.getEmail(), idHistoryLogin, formattedDate);
+            updateTask.addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    // Update successful
+                    Toast.makeText(MainActivity.this, "Update HistoryLogins Success", Toast.LENGTH_SHORT).show();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    // Update failed
+                    Toast.makeText(MainActivity.this, "Update HistoryLogins failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
     }
 
     @Override
