@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -20,6 +21,9 @@ import com.example.studentmanagement.Models.Certificate;
 import com.example.studentmanagement.Models.Class_;
 import com.example.studentmanagement.Models.Subject;
 import com.example.studentmanagement.R;
+import com.example.studentmanagement.utils.DatabaseManagerClass;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,8 +71,8 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassHolder>
     public void onBindViewHolder(@NonNull ClassHolder holder, int position) {
         Class_ class_ = list.get(position);
 
-        holder.id_class.setText(class_.getId());
-        holder.name_class.setText(class_.getName());
+        holder.id_class.setText("Mã lớp: " + class_.getId());
+        holder.name_class.setText("Tên lớp: " +class_.getName());
 
         holder.imageView_more_class.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,6 +115,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassHolder>
                 int itemId = menuItem.getItemId();
 
                 if (itemId == R.id.menu_delete_class) {
+                    deleteClass(class_.getId());
                     return true;
                 }else if (itemId == R.id.menu_students) {
                     // Handle option 2
@@ -124,6 +129,50 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassHolder>
         });
 
         popupMenu.show();
+    }
+
+    public void removeItem(String id) {
+        int position = findPositionByEmail(id);
+        if (position != -1) {
+            list.remove(position);
+            notifyItemRemoved(position);
+            notifyItemRangeChanged(position, getItemCount());
+        }
+    }
+
+    private int findPositionByEmail(String email) {
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getId().equals(email)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+
+    private  void deleteClass(String id){
+        DatabaseManagerClass databaseManager = new DatabaseManagerClass();
+
+// Provide the classId of the class you want to delete
+
+// Call the deleteClass method
+        Task<Void> deleteClassTask = databaseManager.deleteClass(id);
+
+// Add a listener to handle the result when the task is complete
+        deleteClassTask.addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    removeItem(id);
+                    Toast.makeText(getContext(),"Delete Class Success", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Handle the error if the task was not successful
+                    Exception exception = task.getException();
+                    Toast.makeText(getContext(),"Delete Class Fail", Toast.LENGTH_SHORT).show();
+                    // Log or display an error message
+                }
+            }
+        });
     }
 
     private void navigateToStudentFragment(Class_ class_) {

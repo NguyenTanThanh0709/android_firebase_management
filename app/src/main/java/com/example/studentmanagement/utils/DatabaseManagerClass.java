@@ -20,7 +20,6 @@ public class DatabaseManagerClass {
     }
 
     public Task<Void> addClass(Class_ class_) {
-        // Assuming you have a unique ID for each class
         return firestore.collection("classes").document(class_.getId()).set(class_);
     }
 

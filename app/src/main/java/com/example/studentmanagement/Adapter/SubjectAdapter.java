@@ -3,31 +3,25 @@ package com.example.studentmanagement.Adapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.example.studentmanagement.Adapter.Student.ScoreSubjectAdapter;
-import com.example.studentmanagement.Models.ScoreSubject;
 import com.example.studentmanagement.Models.Subject;
 import com.example.studentmanagement.R;
-import com.squareup.picasso.Callback;
+import com.example.studentmanagement.utils.DatabaseManagerSubject;
+import com.google.android.gms.tasks.Task;
 import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import org.apache.poi.ss.formula.functions.T;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,7 +82,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectH
         holder.imageView_more_subject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDeleteConfirmationDialog();
+                showDeleteConfirmationDialog(subject.getId());
             }
         });
 
@@ -121,16 +115,57 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectH
         }
     }
 
-    private void showDeleteConfirmationDialog() {
+    public void removeItem(String id) {
+        int position = findPositionByEmail(id);
+        if (position != -1) {
+            list.remove(position);
+            notifyItemRemoved(position);
+            notifyItemRangeChanged(position, getItemCount());
+        }
+    }
+
+    private int findPositionByEmail(String email) {
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getId().equals(email)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private  void deleteSubject(String id){
+        // Create an instance of DatabaseManagerSubject
+        DatabaseManagerSubject databaseManagerSubject = new DatabaseManagerSubject();
+
+        Task<Void> deleteSubjectTask = databaseManagerSubject.deleteSubject(id);
+
+        deleteSubjectTask.addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+
+
+                removeItem(id);
+                System.out.println("Subject deleted successfully!");
+                Toast.makeText(getContext(),"Subject deleted successfully!", Toast.LENGTH_SHORT).show();
+
+            } else {
+                // Handle the error if the task was not successful
+                Exception exception = task.getException();
+                // Log or display an error message
+                Toast.makeText(getContext(),"Delete Subject Fail", Toast.LENGTH_SHORT).show();
+                System.err.println("Error deleting subject: " + exception.getMessage());
+            }
+        });
+
+    }
+
+    private void showDeleteConfirmationDialog(String id) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Confirm Delete");
         builder.setMessage("Are you sure you want to delete this Subject?");
         builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // Handle the delete action here
-                // You can call a method to delete the employee or perform any other action
-                // For example: deleteEmployee();
+                deleteSubject(id);
             }
         });
         builder.setNegativeButton("Cancel", null);

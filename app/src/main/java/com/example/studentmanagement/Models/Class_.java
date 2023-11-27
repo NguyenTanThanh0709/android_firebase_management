@@ -48,6 +48,14 @@ public class Class_ {
         return id;
     }
 
+    @Override
+    public String toString() {
+        return "Class_{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
+
     public void setId(String id) {
         this.id = id;
     }

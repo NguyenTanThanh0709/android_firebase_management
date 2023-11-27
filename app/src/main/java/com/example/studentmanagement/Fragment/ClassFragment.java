@@ -4,14 +4,17 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.studentmanagement.Adapter.ClassAdapter;
 import com.example.studentmanagement.Adapter.SubjectAdapter;
@@ -19,11 +22,19 @@ import com.example.studentmanagement.Models.Class_;
 import com.example.studentmanagement.Models.Student;
 import com.example.studentmanagement.Models.Subject;
 import com.example.studentmanagement.R;
+import com.example.studentmanagement.utils.DatabaseManagerClass;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -46,6 +57,7 @@ public class ClassFragment extends Fragment {
     private List<Class_> classList;
 
     private FloatingActionButton menu_add_class;
+    private DatabaseManagerClass databaseManager;
 
     public ClassFragment() {
         // Required empty public constructor
@@ -83,6 +95,9 @@ public class ClassFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_class, container, false);
+
+        databaseManager =   new DatabaseManagerClass();
+
         recyclerView = view.findViewById(R.id.class_recycleview);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         classList = new ArrayList<>();
@@ -91,7 +106,8 @@ public class ClassFragment extends Fragment {
         recyclerView.setAdapter(classAdapter);
 
 
-        createSampleClasses();
+        // Fetch classes from Firestore
+        fetchClassesFromFirestore();
 
         menu_add_class = view.findViewById(R.id.menu_add_class);
         menu_add_class.setOnClickListener(new View.OnClickListener() {
@@ -104,33 +120,40 @@ public class ClassFragment extends Fragment {
         return view;
     }
 
-    public void createSampleClasses() {
-        List<Class_> classes = new ArrayList<>();
+    private void fetchClassesFromFirestore() {
+        // Fetch classes from Firestore
+        Task<QuerySnapshot> getAllClassesTask = databaseManager.getAllClasses();
 
-        // Class 1
-        List<Student> studentsClass1 = Arrays.asList(
-                new Student("John Doe", "123456789", "john.doe@example.com", "1995-05-15", true, "avatar1.jpg", "2020-09-01", "2024-06-30"),
-                new Student("Jane Doe", "987654321", "jane.doe@example.com", "1996-08-22", true, "avatar2.jpg", "2020-09-01", "2024-06-30")
-        );
-        Class_ class1 = new Class_("Class 1", studentsClass1);
-        classList.add(class1);
+        getAllClassesTask.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    // Process the QuerySnapshot and update the RecyclerView
+                    updateRecyclerView(task.getResult());
+                } else {
+                    // Handle the error
+                    Exception exception = task.getException();
+                    // Log or display an error message
+                }
+            }
+        });
+    }
 
-        // Class 2
-        List<Student> studentsClass2 = Arrays.asList(
-                new Student("Alice Johnson", "111222333", "alice.johnson@example.com", "1997-02-10", true, "avatar3.jpg", "2020-09-01", "2024-06-30"),
-                new Student("Bob Smith", "444555666", "bob.smith@example.com", "1998-11-05", true, "avatar4.jpg", "2020-09-01", "2024-06-30")
-        );
-        Class_ class2 = new Class_("Class 2", studentsClass2);
-        classList.add(class2);
+    private void updateRecyclerView(QuerySnapshot querySnapshot) {
+        classList.clear();
+        for (DocumentSnapshot document : querySnapshot.getDocuments()) {
+            Class_ class_ = document.toObject(Class_.class);
+            if (class_ != null) {
+                classList.add(class_);
+            }
+        }
+        classAdapter.notifyDataSetChanged();
+    }
 
-        // Class 3
-        List<Student> studentsClass3 = Arrays.asList(
-                new Student("Eva Brown", "777888999", "eva.brown@example.com", "1999-07-18", true, "avatar5.jpg", "2020-09-01", "2024-06-30"),
-                new Student("David White", "222333444", "david.white@example.com", "2000-04-30", true, "avatar6.jpg", "2020-09-01", "2024-06-30")
-        );
-        Class_ class3 = new Class_("Class 3", studentsClass3);
-        classList.add(class3);
-
+    private String generateCustomPushId() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy-HH-mm-ss");
+        LocalDateTime now = LocalDateTime.now();
+        return formatter.format(now).toString().replace("-","");
     }
 
     public void showAddEditCertificateDialog() {
@@ -142,10 +165,17 @@ public class ClassFragment extends Fragment {
 
         final EditText name = dialogView.findViewById(R.id.name_classadd);
 
+        builder.setTitle("Add New Class");
 
         builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
+                if(name.getText().toString() != "" && name.getText() != null){
+                    Class_ class_   = new Class_(generateCustomPushId(),name.getText().toString());
+                    saveNewClass(class_);
+                }
+
 
             }
         });
@@ -159,5 +189,26 @@ public class ClassFragment extends Fragment {
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    private void saveNewClass(Class_ aClass) {
+        Task<Void> addClassTask = databaseManager.addClass(aClass);
+
+        addClassTask.addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(getContext(),"Upload Class Success!", Toast.LENGTH_SHORT).show();
+                    classList.add(aClass);
+                    int position = classList.size() - 1; // Get the position of the added item
+                    classAdapter.notifyItemInserted(position);
+                } else {
+                    // Handle the error if the task was not successful
+                    Exception exception = task.getException();
+                    Toast.makeText(getContext(),"Upload Class Fail!", Toast.LENGTH_SHORT).show();
+                    // Log or display an error message
+                }
+            }
+        });
     }
 }

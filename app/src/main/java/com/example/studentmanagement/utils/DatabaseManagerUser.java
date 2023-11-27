@@ -31,11 +31,7 @@ public class DatabaseManagerUser {
         return firestore.collection("users").document(userId).update(updates);
     }
 
-    private String generateCustomPushId() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy-HH-mm-ss");
-        LocalDateTime now = LocalDateTime.now();
-        return formatter.format(now).toString().replace("-","");
-    }
+
 
     public Task<Void> updateHistoryLoginStartLogout(String userId, String historyLoginId, String newStartLogout) {
         Map<String, Object> updates = new HashMap<>();

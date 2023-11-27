@@ -55,7 +55,10 @@ public class Subject {
 
     @Override
     public String toString() {
-        return name; // Display the name of the subject in the Spinner
+        return "Subject{" +
+                "name='" + name + '\'' +
+                ", id='" + id + '\'' +
+                ", img='" + img + '\'' +
+                '}';
     }
-
 }
