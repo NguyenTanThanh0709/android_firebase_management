@@ -41,10 +41,26 @@ public class StudentActivity extends AppCompatActivity {
 
     private static final int PICK_EXCEL_FILE_REQUEST = 123;
 
+    private String phone;
+    private String type;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student);
+
+        Intent intent = getIntent();
+        if (intent != null) {
+            phone = intent.getStringExtra("phone");
+            type = intent.getStringExtra("type");
+
+            // Now you have the email and type values, you can use them as needed
+            Log.d("EmployeeActivity", "Phone: " + phone);
+            Log.d("EmployeeActivity", "Type: " + type);
+
+            // Add your logic based on the email and type values
+        }
+
         rePlaceFragment(new FormStudentFragment());
     }
 
@@ -108,6 +124,10 @@ public class StudentActivity extends AppCompatActivity {
     }
 
     private  void rePlaceFragment(Fragment fragment){
+        Bundle bundle = new Bundle();
+        bundle.putString("phone", phone); // Replace "value" with the actual email value
+        bundle.putString("type", type); // Replace "value" with the actual type value
+        fragment.setArguments(bundle);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content_student,fragment);
         transaction.commit();

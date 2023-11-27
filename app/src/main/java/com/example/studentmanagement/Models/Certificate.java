@@ -20,6 +20,15 @@ public class Certificate {
         this.id = id;
     }
 
+    public Certificate(String id, String name, String startCertificate, String endCertificate, Double overalScore, String describe, String link) {
+        this.id = id;
+        this.name = name;
+        this.startCertificate = startCertificate;
+        this.endCertificate = endCertificate;
+        this.overalScore = overalScore;
+        this.describe = describe;
+        this.link = link;
+    }
 
     public Certificate() {
     }

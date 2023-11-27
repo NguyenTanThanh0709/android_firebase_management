@@ -85,7 +85,7 @@ public class DatabaseManagerStudent {
         Task<Void> addStudentToClassTask = dbManagerClass.addStudentToClass(classId, student);
 
         // Update the student document to include class information
-        Task<Void> updateStudentTask = studentRef.update("class_", classId);
+        Task<Void> updateStudentTask = studentRef.update("class_id", classId);
 
         // Combine the tasks
         return Tasks.whenAllComplete(addStudentTask, addStudentToClassTask, updateStudentTask)
@@ -110,8 +110,8 @@ public class DatabaseManagerStudent {
     }
 
     public Task<Void> addCertificate(String studentId, Certificate certificate) {
-        String id = generateCustomPushId();
-        certificate.setId(id);
+        String id = certificate.getId();
+
         return firestore.collection("students").document(studentId).collection("certificates")
                 .document(id).set(certificate);
     }
@@ -138,7 +138,7 @@ public class DatabaseManagerStudent {
         // Convert the updatedScoreSubject object to a Map
         Map<String, Object> updatedData = new HashMap<>();
         updatedData.put("startLearn", updatedScoreSubject.getStartLearn());  // replace "subjectName" with other fields as needed
-        updatedData.put("score", updatedScoreSubject.getSocre());
+        updatedData.put("socre", updatedScoreSubject.getSocre());
         // Add other fields as needed
 
         // Update the scoreSubject document
@@ -156,8 +156,7 @@ public class DatabaseManagerStudent {
     }
 
     public Task<QuerySnapshot> getAllSubjectScores(String studentId) {
-        // Assuming 'students' is the collection name
-        // and 'scoresubjects' is a subcollection within a student document
+
         return firestore.collection("students").document(studentId)
                 .collection("scoresubjects").get();
     }

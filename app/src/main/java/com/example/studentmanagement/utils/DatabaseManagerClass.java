@@ -27,6 +27,10 @@ public class DatabaseManagerClass {
         return firestore.collection("classes").document(classId).set(updatedClass);
     }
 
+    public Task<Void> updateStudentInclClass(String classId, Student student) {
+        return firestore.collection("classes").document(classId).collection("students").document(student.getPhoneNumber()).set(student);
+    }
+
     public Task<Void> deleteClass(String classId) {
         return firestore.collection("classes").document(classId).delete();
     }

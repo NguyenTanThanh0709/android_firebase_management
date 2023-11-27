@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,13 +18,12 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.studentmanagement.Activity.StudentActivity;
 import com.example.studentmanagement.Activity.WebViewActivity;
-import com.example.studentmanagement.Fragment.student.CertificateFragment;
 import com.example.studentmanagement.Models.Certificate;
-import com.example.studentmanagement.Models.Student;
+import com.example.studentmanagement.Models.ScoreSubject;
 import com.example.studentmanagement.R;
-import com.example.studentmanagement.Repository.CertificateClickListener;
+import com.example.studentmanagement.utils.DatabaseManagerStudent;
+import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,16 +32,19 @@ public class CertificateAdapter extends  RecyclerView.Adapter<CertificateAdapter
 
     private List<Certificate> list;
     private Context context;
-
+    private String  phone;
+    private DatabaseManagerStudent databaseManagerStudent;
 
 
     public CertificateAdapter() {
         list = new ArrayList<>();
     }
 
-    public CertificateAdapter(List<Certificate> list, Context context) {
+    public CertificateAdapter(List<Certificate> list, Context context, String phone) {
         this.list = list;
         this.context = context;
+        this.phone = phone;
+        databaseManagerStudent = new DatabaseManagerStudent();
     }
 
     public List<Certificate> getList() {
@@ -140,7 +141,7 @@ public class CertificateAdapter extends  RecyclerView.Adapter<CertificateAdapter
                      return true;
                 }else if (itemId == R.id.menu_delete_cer) {
                     // Handle option 2
-                    showDeleteConfirmationDialog();
+                    showDeleteConfirmationDialog(certificate.getId());
                     return true;
                 } else {
                     // Add more conditions for each menu item
@@ -152,20 +153,43 @@ public class CertificateAdapter extends  RecyclerView.Adapter<CertificateAdapter
         popupMenu.show();
     }
 
-    private void showDeleteConfirmationDialog() {
+    private void showDeleteConfirmationDialog(String id) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Confirm Delete");
         builder.setMessage("Are you sure you want to delete this Certificate?");
         builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // Handle the delete action here
-                // You can call a method to delete the employee or perform any other action
-                // For example: deleteEmployee();
+                Delete(id);
             }
         });
         builder.setNegativeButton("Cancel", null);
         builder.show();
+    }
+
+    private void Delete(String id) {
+        Task<Void> deleteCertificateTask = databaseManagerStudent.deleteCertificate(phone, id);
+
+// Handle the task result as needed
+        deleteCertificateTask.addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(getContext(),"certificate deleted successfully",Toast.LENGTH_SHORT).show();
+                for(Certificate subject: list){
+                    if(subject.getId().equals(id)){
+                        list.remove(subject);
+                    }
+                }
+                notifyDataSetChanged();
+            } else {
+                // Handle the exception
+                Exception exception = task.getException();
+                if (exception != null) {
+                    exception.printStackTrace();
+                    Toast.makeText(getContext(),"certificate delete Fail",Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        });
     }
 
     public void showAddEditCertificateDialog(Certificate certificate) {
@@ -181,16 +205,28 @@ public class CertificateAdapter extends  RecyclerView.Adapter<CertificateAdapter
         final EditText editTextDescribe = dialogView.findViewById(R.id.editTextDescribe);
         final EditText editTextLink = dialogView.findViewById(R.id.editTextLink);
 
-        // Set values from the certificate parameter to the EditText fields if needed
+        if (certificate != null) {
+            editTextCertificateName.setText(certificate.getName());
+            editTextStartCertificate.setText(certificate.getStartCertificate());
+            editTextEndCertificate.setText(certificate.getEndCertificate());
+            editTextOverallScore.setText(String.valueOf(certificate.getOveralScore()));
+            editTextDescribe.setText(certificate.getDescribe());
+            editTextLink.setText(certificate.getLink());
+        }
 
         builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // Handle save action, you can get values from EditText fields
+                String certificateName = editTextCertificateName.getText().toString();
                 String startCertificate = editTextStartCertificate.getText().toString();
-                // Add your logic for saving the data or updating the certificate
-                // Notify the adapter that the dataset has changed if needed
-                notifyDataSetChanged();
+                String endCertificate = editTextEndCertificate.getText().toString();
+                double overallScore = Double.parseDouble(editTextOverallScore.getText().toString());
+                String describe = editTextDescribe.getText().toString();
+                String link = editTextLink.getText().toString();
+
+                Certificate updatedCertificate = new Certificate(certificate.getId(), certificateName, startCertificate, endCertificate, overallScore, describe, link);
+
+                updateCertificate(updatedCertificate);
             }
         });
 
@@ -205,6 +241,40 @@ public class CertificateAdapter extends  RecyclerView.Adapter<CertificateAdapter
         dialog.show();
     }
 
+    private void updateCertificate(Certificate updatedCertificate) {
+// Call the updateCertificate method
+        Task<Void> updateCertificateTask = databaseManagerStudent.updateCertificate(phone, updatedCertificate.getId(), updatedCertificate);
+
+// Handle the task result as needed
+        updateCertificateTask.addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                // The certificate was updated successfully
+                for (int i = 0; i < list.size(); i++) {
+                    Certificate certificate = list.get(i);
+                    if (certificate.getId().equals(updatedCertificate.getId())) {
+                        // Update the certificate in the list
+                        list.set(i, updatedCertificate);
+
+                        // Notify the adapter that the data has changed
+                        notifyDataSetChanged();
+                        break; // Exit the loop since we found the certificate
+                    }
+                }
+                Toast.makeText(getContext(),"certificate updated successfully",Toast.LENGTH_SHORT).show();
+
+                System.out.println("Certificate updated successfully");
+            } else {
+                // Handle the exception
+                Exception exception = task.getException();
+                if (exception != null) {
+                    exception.printStackTrace();
+                    Toast.makeText(getContext(),"certificate updated ERROR",Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        });
+    }
+
     private void openLinkInApp(String url) {
         // You can handle the click event here, for example, by navigating to a new activity
         // or fragment to display the web content within the app.
@@ -214,5 +284,7 @@ public class CertificateAdapter extends  RecyclerView.Adapter<CertificateAdapter
         webViewIntent.putExtra("url", url);
         context.startActivity(webViewIntent);
     }
+
+
 
 }

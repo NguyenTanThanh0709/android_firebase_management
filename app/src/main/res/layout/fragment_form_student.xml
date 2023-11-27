@@ -21,13 +21,17 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/image_user"
+            android:id="@+id/image_student"
             android:layout_width="0dp"
             android:layout_height="110dp"
             android:layout_margin="8dp"
             android:layout_weight="2"
             android:scaleType="fitXY"
             android:src="@drawable/pagebkg" />
+        <TextView
+            android:id="@+id/text_img_student"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
         <LinearLayout
             android:orientation="vertical"
@@ -112,6 +116,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:id="@+id/radioGroupSex"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp">
 
@@ -144,6 +149,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:id="@+id/radiogroupStatus"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp">
 
@@ -189,7 +195,7 @@
 
         <!-- Spinner for selecting the role -->
         <Spinner
-            android:id="@+id/spinnerRole"
+            android:id="@+id/spinnerClass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
@@ -280,7 +286,7 @@
             android:text="Submit"
             android:background="@drawable/rounded_button_primary"
             android:textColor="#FFFFFF"
-            android:onClick="onSubmitClick" />
+            android:id="@+id/onSubmitClick" />
 
         <Button
             android:layout_width="0dp"
@@ -290,7 +296,7 @@
             android:text="Clear"
             android:background="@drawable/rounded_button_secondary"
             android:textColor="#FFFFFF"
-            android:onClick="onClear" />
+            android:id="@+id/onClear" />
 
     </LinearLayout>
 

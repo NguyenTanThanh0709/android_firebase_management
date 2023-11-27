@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -19,6 +20,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.studentmanagement.Models.Certificate;
 import com.example.studentmanagement.Models.ScoreSubject;
 import com.example.studentmanagement.R;
+import com.example.studentmanagement.utils.DatabaseManagerStudent;
+import com.google.android.gms.tasks.Task;
+
+import org.apache.poi.ss.formula.functions.T;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,10 +32,14 @@ public class ScoreSubjectAdapter extends  RecyclerView.Adapter<ScoreSubjectAdapt
 
     private List<ScoreSubject> list;
     private Context context;
+    private DatabaseManagerStudent databaseManagerStudent;
+    private String phone;
 
-    public ScoreSubjectAdapter(List<ScoreSubject> list, Context context) {
+    public ScoreSubjectAdapter(List<ScoreSubject> list, Context context, String phone) {
         this.list = list;
         this.context = context;
+        databaseManagerStudent = new DatabaseManagerStudent();
+        this.phone = phone;
     }
 
     public ScoreSubjectAdapter() {
@@ -118,7 +127,7 @@ public class ScoreSubjectAdapter extends  RecyclerView.Adapter<ScoreSubjectAdapt
                     return true;
                 }else if (itemId == R.id.menu_delete_score) {
                     // Handle option 2
-                    showDeleteConfirmationDialog();
+                    showDeleteConfirmationDialog(subject.getId());
                     return true;
                 } else {
                     // Add more conditions for each menu item
@@ -130,16 +139,14 @@ public class ScoreSubjectAdapter extends  RecyclerView.Adapter<ScoreSubjectAdapt
         popupMenu.show();
     }
 
-    private void showDeleteConfirmationDialog() {
+    private void showDeleteConfirmationDialog(String id) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Confirm Delete");
         builder.setMessage("Are you sure you want to delete this Subject of Student?");
         builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // Handle the delete action here
-                // You can call a method to delete the employee or perform any other action
-                // For example: deleteEmployee();
+                Delete(id);
             }
         });
         builder.setNegativeButton("Cancel", null);
@@ -151,11 +158,17 @@ public class ScoreSubjectAdapter extends  RecyclerView.Adapter<ScoreSubjectAdapt
         LayoutInflater inflater = LayoutInflater.from(context);
         View dialogView = inflater.inflate(R.layout.dialog_add_edit_score, null);
         builder.setView(dialogView);
+        builder.setTitle("Chỉnh sửa môn học của sinh viên");
 
         final EditText id = dialogView.findViewById(R.id.id_score_subject);
         final EditText name = dialogView.findViewById(R.id.name_score_subject);
         final EditText score = dialogView.findViewById(R.id.score_score_subject);
         final EditText day = dialogView.findViewById(R.id.daylearn_score_subject);
+
+        id.setText(subject.getId());
+        name.setText(subject.getSubject().getName());
+        score.setText(subject.getSocre() + "");
+        day.setText(subject.getStartLearn());
 
 
         // Set values from the certificate parameter to the EditText fields if needed
@@ -163,10 +176,17 @@ public class ScoreSubjectAdapter extends  RecyclerView.Adapter<ScoreSubjectAdapt
         builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // Handle save action, you can get values from EditText fields
-                // Add your logic for saving the data or updating the certificate
-                // Notify the adapter that the dataset has changed if needed
-                notifyDataSetChanged();
+
+                ScoreSubject scoreSubject = new ScoreSubject(
+                        subject.getId(),
+                        Double.parseDouble(score.getText().toString()),
+                        subject.getSubject(),
+                        day.getText().toString()
+                );
+
+                Update(subject.getId(),scoreSubject);
+
+
             }
         });
 
@@ -179,6 +199,58 @@ public class ScoreSubjectAdapter extends  RecyclerView.Adapter<ScoreSubjectAdapt
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    private void Update( String id, ScoreSubject subject){
+        Task<Void> updateSubjectScoreTask = databaseManagerStudent.updateSubjectScore(phone, id, subject);
+
+// Handle the task result as needed
+        updateSubjectScoreTask.addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for(ScoreSubject subject1: list){
+                    if(subject1.getId().equals(subject.getId())){
+                        subject1.setSocre( subject.getSocre());
+                        subject1.setStartLearn(subject.getStartLearn());
+                    }
+                }
+                notifyDataSetChanged();
+                Toast.makeText(getContext(),"ScoreSubject updated successfully",Toast.LENGTH_SHORT);
+            } else {
+                // Handle the exception
+                Exception exception = task.getException();
+                if (exception != null) {
+                    exception.printStackTrace();
+                    Toast.makeText(getContext(),"ScoreSubject updated Fail",Toast.LENGTH_SHORT);
+                }
+            }
+        });
+
+    }
+
+    private void Delete(String id){
+        Task<Void> deleteSubjectScoreTask = databaseManagerStudent.deleteSubjectScore(phone, id);
+
+// Handle the task result as needed
+        deleteSubjectScoreTask.addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(getContext(),"ScoreSubject deleted successfully",Toast.LENGTH_SHORT).show();
+                for(ScoreSubject subject: list){
+                    if(subject.getId().equals(id)){
+                        list.remove(subject);
+                    }
+                }
+                notifyDataSetChanged();
+                System.out.println("ScoreSubject deleted successfully");
+            } else {
+                // Handle the exception
+                Exception exception = task.getException();
+                if (exception != null) {
+                    exception.printStackTrace();
+                    Toast.makeText(getContext(),"ScoreSubject deleted Fail",Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        });
     }
 
 

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,17 +12,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.studentmanagement.Activity.EmployeeActivity;
 import com.example.studentmanagement.Activity.StudentActivity;
-import com.example.studentmanagement.Adapter.User.UserAdapter;
 import com.example.studentmanagement.Models.Student;
-import com.example.studentmanagement.Models.User;
 import com.example.studentmanagement.R;
+import com.example.studentmanagement.utils.DatabaseManagerClass;
+import com.example.studentmanagement.utils.DatabaseManagerStudent;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -75,14 +76,30 @@ public class StudentAdapter extends  RecyclerView.Adapter<StudentAdapter.Student
                 .into(holder.imageView);
 
         holder.birth.setText("Ngày sinh: " + user.getBirthDay());
+
         holder.name.setText("Tên: " + user.getName());
+
         holder.phone.setText("SĐT: " + user.getPhoneNumber());
+
+        holder.gpa_student.setText("GPA: " + user.getGPA());
+
         holder.class_.setText("Lớp: "+user.getClass_().getName());
         holder.startlearnyearn_student.setText("Năm học: " +user.getStartSchool());
+        if(user.getSex()){
+            holder.sex_student.setText("Giới tính: Nam");
+        }else {
+            holder.sex_student.setText("Giới tính: Nữ");
+        }
+
+        if(user.getStatus()){
+            holder.sex_student.setText("Trạng thái: còn học");
+        }else {
+            holder.sex_student.setText("Trạng thái: thôi học");
+        }
         holder.imageView_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showPopupMenu(view);
+                showPopupMenu(view, user.getPhoneNumber(), user.getClass_().getId());
             }
         });
 
@@ -102,6 +119,7 @@ public class StudentAdapter extends  RecyclerView.Adapter<StudentAdapter.Student
         private TextView class_;
         private TextView birth;
         private TextView sex_student;
+        private TextView gpa_student;
         private TextView startlearnyearn_student;
         private ImageView imageView_more;
 
@@ -111,6 +129,7 @@ public class StudentAdapter extends  RecyclerView.Adapter<StudentAdapter.Student
             imageView = itemView.findViewById(R.id.image_student);
 
             name = itemView.findViewById(R.id.name_student);
+            gpa_student = itemView.findViewById(R.id.gpa_student);
             phone = itemView.findViewById(R.id.phone_student);
             birth = itemView.findViewById(R.id.birth_student);
             class_ = itemView.findViewById(R.id.class_student);
@@ -122,7 +141,7 @@ public class StudentAdapter extends  RecyclerView.Adapter<StudentAdapter.Student
         }
     }
 
-    private void showPopupMenu(View view) {
+    private void showPopupMenu(View view, String phone, String idclass) {
         PopupMenu popupMenu = new PopupMenu(context, view);
         popupMenu.inflate(R.menu.menu_more_student); // Replace with your menu resource
 
@@ -132,20 +151,22 @@ public class StudentAdapter extends  RecyclerView.Adapter<StudentAdapter.Student
                 int itemId = menuItem.getItemId();
 
                 if (itemId == R.id.menu_sedetail_student) {
-                    // Handle option 1
                     Intent intent = new Intent(context, StudentActivity.class);
+                    intent.putExtra("phone", phone); // Truyền dữ liệu qua Intent
+                    intent.putExtra("type", "see");
                     context.startActivity(intent);
-
                     return true;
+
                 } else if (itemId == R.id.menu_edit_student) {
-                    // Handle option 2
                     Intent intent = new Intent(context, StudentActivity.class);
+                    intent.putExtra("phone", phone); // Truyền dữ liệu qua Intent
+                    intent.putExtra("type", "edit");
                     context.startActivity(intent);
-
                     return true;
+
                 }else if (itemId == R.id.menu_delete_student) {
                     // Handle option 2
-                    showDeleteConfirmationDialog();
+                    showDeleteConfirmationDialog(phone, idclass);
                     return true;
                 } else {
                     // Add more conditions for each menu item
@@ -157,20 +178,66 @@ public class StudentAdapter extends  RecyclerView.Adapter<StudentAdapter.Student
         popupMenu.show();
     }
 
-    private void showDeleteConfirmationDialog() {
+    private void showDeleteConfirmationDialog(String phone, String idclass) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Confirm Delete");
         builder.setMessage("Are you sure you want to delete this student?");
         builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // Handle the delete action here
-                // You can call a method to delete the employee or perform any other action
-                // For example: deleteEmployee();
+                deleteStudent(phone, idclass);
             }
         });
         builder.setNegativeButton("Cancel", null);
         builder.show();
+    }
+
+    private void deleteStudent(String phone, String idclass) {
+
+        DatabaseManagerStudent databaseManagerStudent = new DatabaseManagerStudent();
+        DatabaseManagerClass databaseManagerClass = new DatabaseManagerClass();
+
+
+        databaseManagerStudent.deleteStudentById(phone)
+                .addOnSuccessListener(aVoid -> {
+
+
+                    databaseManagerClass.deleteStudentFromClass(idclass, phone)
+                            .addOnSuccessListener(aVoid1 -> {
+                                removeItem(phone);
+                                Toast.makeText(getContext(),"DeleteStudentFromClass, Student document successfully deleted from class!",Toast.LENGTH_SHORT).show();
+                            })
+                            .addOnFailureListener(e -> {
+                                Toast.makeText(getContext(),"DeleteStudentFromClass, Error deleting student document from class",Toast.LENGTH_SHORT).show();
+                            });
+                    // Deletion successful
+                    Log.d("DeleteStudent", "Student document successfully deleted!");
+                })
+                .addOnFailureListener(e -> {
+                    // Handle errors
+                    Toast.makeText(getContext(),"DeleteStudent, Error deleting student document",Toast.LENGTH_SHORT).show();
+                    Log.e("DeleteStudent", "Error deleting student document", e);
+                });
+
+
+    }
+
+    public void removeItem(String email) {
+        int position = findPositionByEmail(email);
+        if (position != -1) {
+            list.remove(position);
+            notifyItemRemoved(position);
+            notifyItemRangeChanged(position, getItemCount());
+        }
+    }
+
+    private int findPositionByEmail(String email) {
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getPhoneNumber().equals(email)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
 }

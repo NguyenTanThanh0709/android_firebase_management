@@ -33,10 +33,16 @@ import com.example.studentmanagement.Models.Class_;
 import com.example.studentmanagement.Models.ScoreSubject;
 import com.example.studentmanagement.Models.Student;
 import com.example.studentmanagement.Models.Subject;
+import com.example.studentmanagement.Models.User;
 import com.example.studentmanagement.R;
 import com.example.studentmanagement.dto.StudentDTO;
+import com.example.studentmanagement.utils.DatabaseManagerStudent;
 import com.example.studentmanagement.utils.File.ExportFileStudent;
 import com.example.studentmanagement.utils.File.ReadFIleStudent;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -53,6 +59,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -80,6 +87,7 @@ public class StudentFragment extends Fragment  implements CustomSortDialogFragme
     private  Button add_student;
     private  Button export_list_student;
     private  Button import_list_student;
+    private DatabaseManagerStudent databaseManagerStudent;
     private static final int PICK_EXCEL_FILE_REQUEST = 123;
     public StudentFragment() {
         // Required empty public constructor
@@ -122,13 +130,14 @@ public class StudentFragment extends Fragment  implements CustomSortDialogFragme
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_student, container, false);
         recyclerView = view.findViewById(R.id.student_recycleview);
-
+        databaseManagerStudent = new DatabaseManagerStudent();
         sort_student = view.findViewById(R.id.sort_student);
         find_student = view.findViewById(R.id.find_student);
 
         add_student = view.findViewById(R.id.add_student);
         import_list_student = view.findViewById(R.id.import_list_student);
         export_list_student = view.findViewById(R.id.export_list_student);
+
         studentList_ = new ArrayList<>();
         import_list_student.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,10 +161,46 @@ public class StudentFragment extends Fragment  implements CustomSortDialogFragme
         studentAdapter = new StudentAdapter(studentList, getContext());
         recyclerView.setAdapter(studentAdapter);
 
-        getStudent();
-        generrateData();
+//        getStudent();
+//        generrateData();
+
+        getAllStudent();
+
         init();
         return view;
+    }
+
+    private void getAllStudent() {
+
+        // Call the getAllStudents method
+        Task<QuerySnapshot> getAllStudentsTask = databaseManagerStudent.getAllStudents();
+        List<Student> tempUserList = new ArrayList<>();
+// Add a listener to handle the result when the task is complete
+        getAllStudentsTask.addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                // The task was successful
+                // Access the QuerySnapshot containing all student documents
+                QuerySnapshot querySnapshot = task.getResult();
+
+                // Now you can process the QuerySnapshot, for example, iterate through documents
+                for (DocumentSnapshot document : querySnapshot.getDocuments()) {
+                    // Access each document's data
+                    Map<String, Object> studentData = document.getData();
+                    Student student = Student.fromQueryDocumentSnapshot((QueryDocumentSnapshot) document);
+                    tempUserList.add(student);
+                    // Handle the student data as needed
+                }
+                studentList.clear();
+                studentList.addAll(tempUserList);
+                studentAdapter.notifyDataSetChanged();
+            } else {
+                // Handle the error if the task was not successful
+                Exception exception = task.getException();
+                // Log or display an error message
+            }
+        });
+
+
     }
 
     private  void init(){
@@ -182,26 +227,6 @@ public class StudentFragment extends Fragment  implements CustomSortDialogFragme
         });
     }
 
-    public  void getStudent(){
-        List<Student> students = new ArrayList<>();
-
-        // Create some students
-        Student student1 = new Student("John Doe", "123-456-7890", "john.doe@example.com", "2000-01-01", true, "avatar1.jpg", "2022-01-01", "2026-01-01");
-        Student student2 = new Student("Jane Doe", "987-654-3210", "jane.doe@example.com", "2000-02-01", true, "avatar2.jpg", "2022-01-01", "2026-01-01");
-        Student student3 = new Student("Bob Smith", "555-123-4567", "bob.smith@example.com", "2000-03-01", true, "avatar3.jpg", "2022-01-01", "2026-01-01");
-        // Add students to the list
-        Class_ classA = new Class_("Class A");
-        student1.setClass_(classA);
-        student2.setClass_(classA);
-        student3.setClass_(classA);
-
-        studentList.add(student1);
-        studentList.add(student2);
-        studentList.add(student3);
-
-        classA.setStudents(studentList);
-
-    }
 
     public void showSortDialog() {
         CustomSortDialogFragment sortDialog = new CustomSortDialogFragment();
@@ -292,57 +317,5 @@ public class StudentFragment extends Fragment  implements CustomSortDialogFragme
 
         startActivityForResult(intent, PICK_EXCEL_FILE_REQUEST);
     }
-    private  void generrateData(){
-        // Create a class
-        Class_ classA = new Class_("Class A");
-
-        // Create subjects
-        Subject math = new Subject("Math");
-        Subject english = new Subject("English");
-
-        // Create certificates
-        Certificate certificate1 = new Certificate("Certificate 1", "2021-01-01", "2021-12-31", 90.5, "Excellent", "link1");
-        Certificate certificate2 = new Certificate("Certificate 2", "2022-01-01", "2022-12-31", 85.0, "Very Good", "link2");
-
-        // Create score subjects
-        ScoreSubject mathScore = new ScoreSubject("1", 95.0, math, "2021-09-01");
-        ScoreSubject englishScore = new ScoreSubject("2", 88.5, english, "2021-09-01");
-
-        List<ScoreSubject> scoreSubjects = new ArrayList<>();
-        scoreSubjects.add(mathScore);
-        scoreSubjects.add(englishScore);
-
-        // Create students
-        Student student1 = new Student("John Doe", "123456789", "john@example.com", "2000-01-01", true,
-                true, "avatar1", "2020-09-01", "2024-06-30", 3.8, classA);
-        student1.setScoreSubjects(scoreSubjects);
-        List<Certificate> certificatesForStudent1 = new ArrayList<>();
-        certificatesForStudent1.add(certificate1);
-        certificatesForStudent1.add(certificate2);
-        // Add more certificates if needed
-
-        student1.setCertificates(certificatesForStudent1);
-
-
-        Student student2 = new Student("Jane Doe", "987654321", "jane@example.com", "2001-03-15", false,
-                false, "avatar2", "2020-09-01", "2024-06-30", 3.5, classA);
-
-        Student student3 = new Student("Bob Smith", "555555555", "bob@example.com", "2002-07-20", true,
-                true, "avatar3", "2020-09-01", "2024-06-30", 3.2, classA);
-        List<Certificate> certificatesForStudent3 = new ArrayList<>();
-        certificatesForStudent3.add(certificate1);
-
-        student3.setCertificates(certificatesForStudent3);
-
-
-        // Add students to the class
-
-        studentList_.add(student1);
-        studentList_.add(student2);
-        studentList_.add(student3);
-        classA.setStudents(studentList_);
-
-    }
-
 
 }

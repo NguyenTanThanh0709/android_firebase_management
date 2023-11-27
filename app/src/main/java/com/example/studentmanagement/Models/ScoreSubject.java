@@ -1,6 +1,9 @@
 package com.example.studentmanagement.Models;
 
+import com.google.firebase.firestore.DocumentSnapshot;
+
 import java.time.LocalDate;
+import java.util.Map;
 
 public class ScoreSubject {
     private String id;
@@ -49,5 +52,40 @@ public class ScoreSubject {
         this.socre = socre;
         this.subject = subject;
         this.startLearn = startLearn;
+    }
+
+    public static ScoreSubject convertDocumentToScoreSubject(DocumentSnapshot document) {
+        if (document.exists()) {
+            ScoreSubject scoreSubject = new ScoreSubject();
+
+            // Set properties from the document data
+            scoreSubject.setId(document.getId());
+            scoreSubject.setSocre(document.getDouble("socre")); // Assumes "score" is stored as a double in Firestore
+            scoreSubject.setStartLearn(document.getString("startLearn"));
+
+            // Convert nested Subject data
+            Subject subject = convertSubjectData(document.getData().get("subject"));
+            scoreSubject.setSubject(subject);
+
+            return scoreSubject;
+        } else {
+            return null; // Document does not exist
+        }
+    }
+
+    private static Subject convertSubjectData(Object subjectData) {
+        if (subjectData instanceof Map) {
+            Map<String, Object> subjectMap = (Map<String, Object>) subjectData;
+
+            Subject subject = new Subject();
+            subject.setId((String) subjectMap.get("id"));
+            subject.setName((String) subjectMap.get("name"));
+            subject.setImg((String) subjectMap.get("img"));
+            // Add other properties as needed
+
+            return subject;
+        } else {
+            return null; // Subject data is not in the expected format
+        }
     }
 }

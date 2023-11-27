@@ -24,8 +24,17 @@ import com.example.studentmanagement.Models.Certificate;
 import com.example.studentmanagement.Models.Student;
 import com.example.studentmanagement.R;
 import com.example.studentmanagement.Repository.CertificateClickListener;
+import com.example.studentmanagement.utils.DatabaseManagerStudent;
+import com.example.studentmanagement.utils.DatabaseManagerSubject;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import org.apache.poi.ss.formula.functions.T;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -52,19 +61,14 @@ public class CertificateFragment extends Fragment{
 
     private FloatingActionButton menu_add_certificate;
 
+    private DatabaseManagerStudent databaseManagerStudent;
+    private String phone = "";
+
     public CertificateFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CertificateFragment.
-     */
-    // TODO: Rename and change types and number of parameters
+
     public static CertificateFragment newInstance(String param1, String param2) {
         CertificateFragment fragment = new CertificateFragment();
         Bundle args = new Bundle();
@@ -88,10 +92,18 @@ public class CertificateFragment extends Fragment{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_certificate, container, false);
+
+        Bundle args = getArguments();
+
+        if (args != null) {
+            phone = args.getString("phone", "");
+        }
+        databaseManagerStudent = new DatabaseManagerStudent();
+
         recyclerView = view.findViewById(R.id.certificate_recycleview);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         certificateList = new ArrayList<>();
-        certificateAdapter = new CertificateAdapter(certificateList, getContext());
+        certificateAdapter = new CertificateAdapter(certificateList, getContext(), phone);
 
         recyclerView.setAdapter(certificateAdapter);
 
@@ -109,13 +121,35 @@ public class CertificateFragment extends Fragment{
     }
 
     public  void getCertificate(){
-        Certificate certificate1 = new Certificate("Certificate 1", "2022-01-01", "2022-12-31", 90.5, "Good performance", "https://docs.google.com/document/d/1b0wfxctvcoBtoG1xa0frcf4DVhSiCnyW7TLkFp6b5LM/edit");
-        Certificate certificate2 = new Certificate("Certificate 2", "2022-02-01", "2022-11-30", 88.0, "Excellent performance", "https://docs.google.com/document/d/1b0wfxctvcoBtoG1xa0frcf4DVhSiCnyW7TLkFp6b5LM/edit");
-        Certificate certificate3 = new Certificate("Certificate 3", "2022-03-01", "2022-10-31", 95.5, "Outstanding performance", "https://docs.google.com/document/d/1b0wfxctvcoBtoG1xa0frcf4DVhSiCnyW7TLkFp6b5LM/edit");
 
-        certificateList.add(certificate1);
-        certificateList.add(certificate2);
-        certificateList.add(certificate3);
+        Task<QuerySnapshot> getAllCertificatesTask = databaseManagerStudent.getAllCertificates(phone);
+
+// Handle the task result
+        getAllCertificatesTask.addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                // The task was successful, and you can now process the QuerySnapshot
+                QuerySnapshot querySnapshot = task.getResult();
+                List<Certificate> certificates = new ArrayList<>();
+
+                // Iterate through the documents in the QuerySnapshot
+                for (QueryDocumentSnapshot documentSnapshot : querySnapshot) {
+                    // Access certificate data from the documentSnapshot
+                    Certificate certificate = documentSnapshot.toObject(Certificate.class);
+                    certificates.add(certificate);
+                }
+
+                certificateList.clear();
+                certificateList.addAll(certificates);
+                certificateAdapter.notifyDataSetChanged();
+            } else {
+                // The task failed, handle the exception
+                Exception exception = task.getException();
+                if (exception != null) {
+                    exception.printStackTrace();
+                }
+            }
+        });
+
     }
 
     public void showAddEditCertificateDialog(Certificate certificate) {
@@ -126,6 +160,7 @@ public class CertificateFragment extends Fragment{
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_add_edit_certificate, null);
         builder.setView(dialogView);
+        builder.setTitle("Thêm Chứng chỉ cho sinh viên");
 
         final EditText editTextCertificateName = dialogView.findViewById(R.id.editTextCertificateName);
         final EditText editTextStartCertificate = dialogView.findViewById(R.id.editTextStartCertificate);
@@ -137,9 +172,24 @@ public class CertificateFragment extends Fragment{
         builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String startCertificate = editTextStartCertificate.getText().toString();
 
-                Toast.makeText(getContext(),startCertificate,Toast.LENGTH_SHORT).show();
+
+                if (isValidInput(editTextCertificateName, editTextStartCertificate, editTextEndCertificate,
+                        editTextOverallScore, editTextDescribe, editTextLink)) {
+
+                    Certificate certificate1 = new Certificate(
+                            generateCustomPushId(),editTextCertificateName.getText().toString(),
+                            editTextStartCertificate.getText().toString(),
+                            editTextEndCertificate.getText().toString(),
+                            Double.parseDouble(editTextOverallScore.getText().toString()),
+                            editTextDescribe.getText().toString(),
+                            editTextLink.getText().toString()
+                    );
+                    saveCertificate(certificate1);
+                } else {
+                    // Show a message or handle the case where input is not valid
+                    Toast.makeText(getContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -154,23 +204,45 @@ public class CertificateFragment extends Fragment{
         dialog.show();
     }
 
-    private void saveCertificate(EditText editTextCertificateName, EditText editTextStartCertificate,
-                                 EditText editTextEndCertificate, EditText editTextOverallScore,
-                                 EditText editTextDescribe, EditText editTextLink) {
-        String name = editTextCertificateName.getText().toString();
-        String startCertificate = editTextStartCertificate.getText().toString();
-        String endCertificate = editTextEndCertificate.getText().toString();
-        double overallScore = Double.parseDouble(editTextOverallScore.getText().toString());
-        String describe = editTextDescribe.getText().toString();
-        String link = editTextLink.getText().toString();
+    private void saveCertificate(Certificate certificate1) {
+        Task<Void> addCertificateTask = databaseManagerStudent.addCertificate(phone, certificate1);
 
-        Certificate newCertificate = new Certificate(name, startCertificate, endCertificate, overallScore, describe, link);
+// Handle the task result as needed
+        addCertificateTask.addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                // The certificate was added successfully
+                certificateList.add(certificate1);
+                certificateAdapter.notifyDataSetChanged();
+                Toast.makeText(getContext(),"Certificate added successfully",Toast.LENGTH_SHORT).show();
+                System.out.println("Certificate added successfully");
+            } else {
+                // Handle the exception
+                Exception exception = task.getException();
+                if (exception != null) {
+                    Toast.makeText(getContext(),"Certificate added Fail",Toast.LENGTH_SHORT).show();
 
-        // Add the new certificate to the list
-        certificateList.add(newCertificate);
+                    exception.printStackTrace();
+                }
+            }
+        });
 
-        // Notify the adapter that the dataset has changed
-        certificateAdapter.notifyDataSetChanged();
+    }
+
+    private String generateCustomPushId() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy-HH-mm-ss");
+        LocalDateTime now = LocalDateTime.now();
+        return formatter.format(now).toString().replace("-","");
+    }
+
+
+
+    private boolean isValidInput(EditText... editTexts) {
+        for (EditText editText : editTexts) {
+            if (editText.getText().toString().trim().isEmpty()) {
+                return false; // Return false if any EditText is empty
+            }
+        }
+        return true; // All EditTexts are non-empty
     }
 
 
