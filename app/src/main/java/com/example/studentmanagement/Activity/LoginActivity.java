@@ -119,6 +119,7 @@ public class LoginActivity extends AppCompatActivity {
                                 Gson gson = new Gson();
                                 String userJson = gson.toJson(user);
                                 editor.putString("user", userJson);
+                                editor.putString("role",user.getRole().toString());
                                 editor.apply();
 
                                 // Kiểm tra và yêu cầu quyền vị trí nếu chưa có
@@ -217,17 +218,17 @@ public class LoginActivity extends AppCompatActivity {
                 String email = log_email.getText().toString().trim();
                 String password = login_password.getText().toString().trim();
 
-                Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
+//                Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                startActivity(intent);
 
-//                if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)) {
-//                    getUserById(email,password);
-//
-//                } else {
-//                    Toast.makeText(LoginActivity.this,"Vui lòng điền đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
+                if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)) {
+                    getUserById(email,password);
+
+                } else {
+                    Toast.makeText(LoginActivity.this,"Vui lòng điền đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
             }
         });
     }

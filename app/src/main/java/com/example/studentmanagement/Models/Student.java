@@ -1,5 +1,6 @@
 package com.example.studentmanagement.Models;
 
+import com.example.studentmanagement.dto.StudentDTO;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -34,6 +35,23 @@ public class Student {
         this.startSchool = startSchool;
         this.endSchool = endSchool;
         this.GPA = GPA;
+    }
+
+    public static Student fromStudentDTO(StudentDTO studentDTO, Class_ class_) {
+        // Perform the conversion from StudentDTO to Student
+        String name = studentDTO.getName();
+        String phoneNumber = studentDTO.getPhoneNumber();
+        String email = studentDTO.getEmail();
+        String birthDay = studentDTO.getBirthDay();
+        Boolean sex = studentDTO.getSex();
+        Boolean status = studentDTO.getStatus();
+        String avatar = studentDTO.getAvatar();
+        String startSchool = studentDTO.getStartSchool();
+        String endSchool = studentDTO.getEndSchool();
+        String classId = studentDTO.getClass_(); // Assuming class_ is the class ID
+
+        // Create a new Student object with the converted data
+        return new Student(classId,name, phoneNumber, email, birthDay, sex, status, avatar, startSchool, endSchool,0.0,class_);
     }
 
     public Student(String class_id,String name, String phoneNumber, String email, String birthDay, Boolean sex, Boolean status, String avatar, String startSchool, String endSchool, Double GPA, Class_ class_) {

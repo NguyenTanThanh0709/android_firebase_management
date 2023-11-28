@@ -10,17 +10,59 @@
         android:id="@+id/radioButtonSortByName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="xắp sếp theo tên"/>
+        android:text="xắp sếp theo tên(từ A-Z)"/>
+    <RadioButton
+        android:id="@+id/radioButtonSortByName_"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="xắp sếp theo tên(từ Z-A)"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
 
     <RadioButton
         android:id="@+id/radioButtonSortByDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="sắp xếp theo năm sinh"/>
+        android:text="sắp xếp theo năm sinh(tăng dần)"/>
+    <RadioButton
+        android:id="@+id/radioButtonSortByDate_"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="sắp xếp theo năm sinh(giảm dần)"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+    <RadioButton
+        android:id="@+id/radioButtonSortByGPA"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="sắp xếp theo GPA(tăng dần)"/>
+
+    <RadioButton
+        android:id="@+id/radioButtonSortByGPA_"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="sắp xếp theo GPA(giảm dần)"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
 
     <RadioButton
         android:id="@+id/radioButtonSortBystartlearn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="sắp xếp theo năm nhập học"/>
+        android:text="sắp xếp theo năm nhập học(tăng dần)"/>
+    <RadioButton
+        android:id="@+id/radioButtonSortBystartlearn_"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="sắp xếp theo năm nhập học(giảm dần)"/>
 </RadioGroup>

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -32,13 +33,25 @@ public class StudentAdapter extends  RecyclerView.Adapter<StudentAdapter.Student
 
     private List<Student> list;
     private Context context;
+    private List<Student> filteredStudentList;
+    private String role;
+
+    public void setFilteredStudentList(List<Student> filteredStudentList) {
+        list.clear();
+        list.addAll(filteredStudentList);
+        notifyDataSetChanged();
+    }
 
     public StudentAdapter(List<Student> list, Context context) {
         this.list = list;
         this.context = context;
+        filteredStudentList = new ArrayList<>();
+        SharedPreferences preferences = context.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        role = preferences.getString("role", "");
     }
 
     public StudentAdapter() {
+        filteredStudentList = new ArrayList<>();
         list = new ArrayList<>();
     }
 
@@ -92,14 +105,14 @@ public class StudentAdapter extends  RecyclerView.Adapter<StudentAdapter.Student
         }
 
         if(user.getStatus()){
-            holder.sex_student.setText("Trạng thái: còn học");
+            holder.status_student.setText("Trạng thái: còn học");
         }else {
-            holder.sex_student.setText("Trạng thái: thôi học");
+            holder.status_student.setText("Trạng thái: thôi học");
         }
         holder.imageView_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showPopupMenu(view, user.getPhoneNumber(), user.getClass_().getId());
+                showPopupMenu(view,user.getName(), user.getPhoneNumber(), user.getClass_().getId());
             }
         });
 
@@ -119,6 +132,7 @@ public class StudentAdapter extends  RecyclerView.Adapter<StudentAdapter.Student
         private TextView class_;
         private TextView birth;
         private TextView sex_student;
+        private TextView status_student;
         private TextView gpa_student;
         private TextView startlearnyearn_student;
         private ImageView imageView_more;
@@ -134,6 +148,7 @@ public class StudentAdapter extends  RecyclerView.Adapter<StudentAdapter.Student
             birth = itemView.findViewById(R.id.birth_student);
             class_ = itemView.findViewById(R.id.class_student);
             sex_student = itemView.findViewById(R.id.sex_student);
+            status_student = itemView.findViewById(R.id.status_student);
             startlearnyearn_student = itemView.findViewById(R.id.startlearnyearn_student);
 
             imageView_more = itemView.findViewById(R.id.imageView_more_student);
@@ -141,9 +156,19 @@ public class StudentAdapter extends  RecyclerView.Adapter<StudentAdapter.Student
         }
     }
 
-    private void showPopupMenu(View view, String phone, String idclass) {
+    private void showPopupMenu(View view,String name, String phone, String idclass) {
         PopupMenu popupMenu = new PopupMenu(context, view);
         popupMenu.inflate(R.menu.menu_more_student); // Replace with your menu resource
+
+        boolean isAdmin = role.equals("EMPLOYEE");
+
+        // Find the menu items
+        MenuItem editMenuItem = popupMenu.getMenu().findItem(R.id.menu_edit_student);
+        MenuItem deleteMenuItem = popupMenu.getMenu().findItem(R.id.menu_delete_student);
+
+        // Set visibility based on the role
+        editMenuItem.setVisible(!isAdmin);
+        deleteMenuItem.setVisible(!isAdmin);
 
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
@@ -152,7 +177,8 @@ public class StudentAdapter extends  RecyclerView.Adapter<StudentAdapter.Student
 
                 if (itemId == R.id.menu_sedetail_student) {
                     Intent intent = new Intent(context, StudentActivity.class);
-                    intent.putExtra("phone", phone); // Truyền dữ liệu qua Intent
+                    intent.putExtra("phone", phone);
+                    intent.putExtra("name", name); // Truyền dữ liệu qua Intent
                     intent.putExtra("type", "see");
                     context.startActivity(intent);
                     return true;
@@ -160,6 +186,8 @@ public class StudentAdapter extends  RecyclerView.Adapter<StudentAdapter.Student
                 } else if (itemId == R.id.menu_edit_student) {
                     Intent intent = new Intent(context, StudentActivity.class);
                     intent.putExtra("phone", phone); // Truyền dữ liệu qua Intent
+                    intent.putExtra("name", name); // Truyền dữ liệu qua Intent
+
                     intent.putExtra("type", "edit");
                     context.startActivity(intent);
                     return true;

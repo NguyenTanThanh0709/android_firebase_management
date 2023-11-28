@@ -16,10 +16,19 @@ import com.example.studentmanagement.R;
 
 public class CustomSortDialogFragment extends DialogFragment {
 
-    private RadioButton radioButtonSortByName, radioButtonSortByDate, radioButtonSortBystartlearn;
+    private RadioButton radioButtonSortByName, radioButtonSortByDate, radioButtonSortBystartlearn, radioButtonSortByGPA;
+    private RadioButton radioButtonSortByName_, radioButtonSortByDate_, radioButtonSortBystartlearn_, radioButtonSortByGPA_;
 
     public interface SortDialogListener {
-        void onSortApplied(boolean sortByDate, boolean sortByName, boolean sortByStartLearn);
+        void onSortApplied( boolean sortByName,boolean sortByDate,boolean sortByGPA, boolean sortByStartLearn
+            , boolean sortByName_,boolean sortByDate_,boolean sortByGPA_, boolean sortByStartLearn_
+        );
+    }
+
+    private SortDialogListener sortDialogListener;
+
+    public void setSortDialogListener(SortDialogListener listener) {
+        this.sortDialogListener = listener;
     }
 
     @NonNull
@@ -31,18 +40,31 @@ public class CustomSortDialogFragment extends DialogFragment {
 
         radioButtonSortByName = view.findViewById(R.id.radioButtonSortByName);
         radioButtonSortByDate = view.findViewById(R.id.radioButtonSortByDate);
+        radioButtonSortByGPA = view.findViewById(R.id.radioButtonSortByGPA);
         radioButtonSortBystartlearn = view.findViewById(R.id.radioButtonSortBystartlearn);
 
+
+        radioButtonSortByName_ = view.findViewById(R.id.radioButtonSortByName_);
+        radioButtonSortByDate_ = view.findViewById(R.id.radioButtonSortByDate_);
+        radioButtonSortByGPA_ = view.findViewById(R.id.radioButtonSortByGPA_);
+        radioButtonSortBystartlearn_ = view.findViewById(R.id.radioButtonSortBystartlearn_);
         builder.setView(view)
-                .setTitle("Sort Students")
+                .setTitle("Sắp xếp học sinh theo tiêu chí!")
                 .setPositiveButton("Apply", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-//                        SortDialogListener listener = (SortDialogListener) requireActivity();
-//                        listener.onSortApplied(
-//                                radioButtonSortByDate.isChecked(),
-//                                radioButtonSortByName.isChecked(),
-//                                radioButtonSortBystartlearn.isChecked());
+                        if (sortDialogListener != null) {
+                            sortDialogListener.onSortApplied(
+                                    radioButtonSortByName.isChecked(),
+                                    radioButtonSortByDate.isChecked(),
+                                    radioButtonSortByGPA.isChecked(),
+                                    radioButtonSortBystartlearn.isChecked(),
+                                    radioButtonSortByName_.isChecked(),
+                                    radioButtonSortByDate_.isChecked(),
+                                    radioButtonSortByGPA_.isChecked(),
+                                    radioButtonSortBystartlearn_.isChecked()
+                            );
+                        }
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

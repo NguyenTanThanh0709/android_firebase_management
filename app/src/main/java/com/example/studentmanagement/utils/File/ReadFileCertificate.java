@@ -3,7 +3,6 @@ package com.example.studentmanagement.utils.File;
 import android.content.Context;
 
 import com.example.studentmanagement.dto.CertificateDTO;
-import com.example.studentmanagement.dto.StudentDTO;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -14,8 +13,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -23,7 +20,8 @@ import java.util.UUID;
 
 public class ReadFileCertificate {
 
-    public static List<CertificateDTO> readExcelFile(Context context, InputStream inputStream) throws IOException {
+
+    public static List<CertificateDTO> readExcelFile(Context context, InputStream inputStream, String phone) throws IOException {
         List<CertificateDTO> certificateDTOList = new ArrayList<>();
 
         try (Workbook workbook = new XSSFWorkbook(inputStream)) {
@@ -36,7 +34,7 @@ public class ReadFileCertificate {
 
                 while (rowIterator.hasNext()) {
                     Row row = rowIterator.next();
-                    CertificateDTO certificateDTO = mapRowToCertificate(row, headers);
+                    CertificateDTO certificateDTO = mapRowToCertificate(row, headers,phone);
                     if (certificateDTO != null) {
                         certificateDTOList.add(certificateDTO);
                     }
@@ -62,10 +60,11 @@ public class ReadFileCertificate {
     }
 
 
-    private static CertificateDTO mapRowToCertificate(Row row, List<String> headers) {
+    private static CertificateDTO mapRowToCertificate(Row row, List<String> headers, String phone) {
         CertificateDTO certificateDTO = new CertificateDTO();
         String id = generateCustomPushId();
         certificateDTO.setId(id);
+        certificateDTO.setPhoneStudent(phone);
         for (int i = 0; i < headers.size(); i++) {
             Cell cell = row.getCell(i, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL);
             if (cell != null) {
@@ -89,9 +88,6 @@ public class ReadFileCertificate {
                         break;
                     case "link":
                         certificateDTO.setLink(cell.getStringCellValue());
-                        break;
-                    case "số điện thoại học sinh":
-                        certificateDTO.setPhoneStudent(cell.getStringCellValue());
                         break;
                     // Add additional cases for other headers if needed
                 }

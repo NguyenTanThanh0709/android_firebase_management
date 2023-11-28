@@ -174,9 +174,10 @@ public class CertificateAdapter extends  RecyclerView.Adapter<CertificateAdapter
         deleteCertificateTask.addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Toast.makeText(getContext(),"certificate deleted successfully",Toast.LENGTH_SHORT).show();
-                for(Certificate subject: list){
-                    if(subject.getId().equals(id)){
-                        list.remove(subject);
+                for (java.util.Iterator<Certificate> iterator = list.iterator(); iterator.hasNext();) {
+                    Certificate subject = iterator.next();
+                    if (subject.getId().equals(id)) {
+                        iterator.remove(); // Use iterator's remove method to avoid ConcurrentModificationException
                     }
                 }
                 notifyDataSetChanged();

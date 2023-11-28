@@ -101,12 +101,14 @@
                     android:id="@+id/radioButtonMale"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:text="Male"/>
 
                 <RadioButton
                     android:id="@+id/radioButtonFemale"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:text="Female"/>
             </RadioGroup>
         </LinearLayout>
@@ -293,7 +295,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Enter your password"
-                android:inputType="textPassword"
                 android:layout_marginTop="8dp"
                 android:enabled="false"/>
         </LinearLayout>

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +30,7 @@ import java.util.List;
 public class UserAdapter extends  RecyclerView.Adapter<UserAdapter.UserHolder> {
     private List<User> list;
     private Context context;
+    private String role;
 
     public List<User> getList() {
         return list;
@@ -45,6 +47,8 @@ public class UserAdapter extends  RecyclerView.Adapter<UserAdapter.UserHolder> {
     public UserAdapter(List<User> list, Context context) {
         this.list = list;
         this.context = context;
+        SharedPreferences preferences = context.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        role = preferences.getString("role", "");
     }
 
     @NonNull
@@ -138,6 +142,16 @@ public class UserAdapter extends  RecyclerView.Adapter<UserAdapter.UserHolder> {
     private void showPopupMenu(View view, String email) {
         PopupMenu popupMenu = new PopupMenu(context, view);
         popupMenu.inflate(R.menu.menu_more_employee); // Replace with your menu resource
+
+        boolean isAdmin = role.equals("ADMIN");
+
+        // Find the menu items
+        MenuItem editMenuItem = popupMenu.getMenu().findItem(R.id.menu_edit_employee);
+        MenuItem deleteMenuItem = popupMenu.getMenu().findItem(R.id.menu_delete_employee);
+
+        // Set visibility based on the role
+        editMenuItem.setVisible(isAdmin);
+        deleteMenuItem.setVisible(isAdmin);
 
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override

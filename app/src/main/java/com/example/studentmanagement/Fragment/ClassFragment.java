@@ -1,7 +1,9 @@
 package com.example.studentmanagement.Fragment;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -55,6 +57,7 @@ public class ClassFragment extends Fragment {
     private RecyclerView recyclerView;
     private ClassAdapter classAdapter;
     private List<Class_> classList;
+    private String role;
 
     private FloatingActionButton menu_add_class;
     private DatabaseManagerClass databaseManager;
@@ -98,6 +101,9 @@ public class ClassFragment extends Fragment {
 
         databaseManager =   new DatabaseManagerClass();
 
+        SharedPreferences preferences = requireContext().getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        role = preferences.getString("role", "");
+
         recyclerView = view.findViewById(R.id.class_recycleview);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         classList = new ArrayList<>();
@@ -110,12 +116,20 @@ public class ClassFragment extends Fragment {
         fetchClassesFromFirestore();
 
         menu_add_class = view.findViewById(R.id.menu_add_class);
-        menu_add_class.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showAddEditCertificateDialog();
-            }
-        });
+
+        if(role.equals("EMPLOYEE")){
+            menu_add_class.setVisibility(View.GONE);
+        }else {
+
+            menu_add_class.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showAddEditCertificateDialog();
+                }
+            });
+
+        }
+
 
         return view;
     }

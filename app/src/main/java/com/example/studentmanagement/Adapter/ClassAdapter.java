@@ -1,6 +1,7 @@
 package com.example.studentmanagement.Adapter;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,6 +35,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassHolder>
 
     private List<Class_> list;
     private Context context;
+    private String role;
 
     public ClassAdapter() {
         list = new ArrayList<>();
@@ -42,6 +44,8 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassHolder>
     public ClassAdapter(List<Class_> list, Context context) {
         this.list = list;
         this.context = context;
+        SharedPreferences preferences = context.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        role = preferences.getString("role", "");
     }
 
     public List<Class_> getList() {
@@ -74,12 +78,23 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassHolder>
         holder.id_class.setText("Mã lớp: " + class_.getId());
         holder.name_class.setText("Tên lớp: " +class_.getName());
 
-        holder.imageView_more_class.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showPopupMenu(view, class_);
-            }
-        });
+        boolean isAdmin = role.equals("EMPLOYEE");
+
+        // Find the menu items
+
+        // Set visibility based on the role
+        if (isAdmin) {
+            holder.imageView_more_class.setVisibility(View.GONE);
+        }else {
+            holder.imageView_more_class.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showPopupMenu(view, class_);
+                }
+            });
+        }
+
+
     }
 
     @Override
@@ -109,6 +124,8 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassHolder>
         PopupMenu popupMenu = new PopupMenu(context, view);
         popupMenu.inflate(R.menu.menu_more_class); // Replace with your menu resource
 
+
+
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
@@ -117,10 +134,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassHolder>
                 if (itemId == R.id.menu_delete_class) {
                     deleteClass(class_.getId());
                     return true;
-                }else if (itemId == R.id.menu_students) {
-                    // Handle option 2
-                    navigateToStudentFragment(class_);
-                    return true;
+
                 } else {
                     // Add more conditions for each menu item
                     return false;
@@ -175,14 +189,4 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassHolder>
         });
     }
 
-    private void navigateToStudentFragment(Class_ class_) {
-        // Replace the code below with the logic to navigate to the StudentFragment
-        // You might need to use the FragmentManager to replace the current fragment with the StudentFragment
-        // For example:
-        StudentFragment studentFragment = new StudentFragment();
-        FragmentTransaction transaction = ((FragmentActivity) context).getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.content_, studentFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
 }

@@ -29,7 +29,7 @@ public class DatabaseManagerStudent {
         firestore = FirebaseFirestore.getInstance();
     }
 
-    public Task<Void> addListStudentsAndAssociateWithClass(String classId, List<Student> studentList) {
+    public Task<Void> addListStudentsAndAssociateWithClass( List<Student> studentList) {
         // Create a batched write
         WriteBatch batch = firestore.batch();
 
@@ -49,7 +49,7 @@ public class DatabaseManagerStudent {
             batch.set(studentRef, student);
 
             // Add student to the specified class
-            Task<Void> addStudentToClassTask = dbManagerClass.addStudentToClass(classId, student);
+            Task<Void> addStudentToClassTask = dbManagerClass.addStudentToClass(student.getClass_id(), student);
 
             // Add tasks to the list
             tasks.add(addStudentToClassTask);
@@ -63,7 +63,7 @@ public class DatabaseManagerStudent {
         // IMPORTANT: Move the updateStudentTask outside the loop
         for (Student student : studentList) {
             DocumentReference studentRef = studentsCollection.document(student.getPhoneNumber());
-            Task<Void> updateStudentTask = studentRef.update("class_", classId);
+            Task<Void> updateStudentTask = studentRef.update("class_id", student.getClass_id());
             tasks.add(updateStudentTask);
         }
 
@@ -181,11 +181,10 @@ public class DatabaseManagerStudent {
         // Loop through the list and add each certificate to the batch with a specific ID
         for (Certificate certificate : certificateList) {
             // Assuming you have a method to generate a unique ID for certificates
-            String certificateId = generateCustomPushId();
-            certificate.setId(certificateId);
+
 
             // Create a DocumentReference with the specific ID
-            DocumentReference certificateRef = certificatesCollection.document(certificateId);
+            DocumentReference certificateRef = certificatesCollection.document(certificate.getId());
 
             // Set the certificate data in the batch
             batch.set(certificateRef, certificate);

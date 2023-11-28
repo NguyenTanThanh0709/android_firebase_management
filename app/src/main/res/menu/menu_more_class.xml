@@ -3,7 +3,4 @@
     <item
         android:id="@+id/menu_delete_class"
         android:title="Xóa lớp học" />
-    <item
-        android:id="@+id/menu_students"
-        android:title="Xem danh sách sinh viên" />
 </menu>

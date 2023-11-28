@@ -1,6 +1,8 @@
 package com.example.studentmanagement.Fragment.user;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -42,6 +44,8 @@ public class EmployeeFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private String role;
 
     private RecyclerView recyclerView;
     private UserAdapter userAdapter;
@@ -101,14 +105,25 @@ public class EmployeeFragment extends Fragment {
         recyclerView.setAdapter(userAdapter);
 
         getListUser();
+
+        SharedPreferences preferences = requireContext().getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        role = preferences.getString("role", "");
+
+
+
         menu_add_employee = view.findViewById(R.id.menu_add_employee);
-        menu_add_employee.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), EmployeeActivity.class);
-                startActivity(intent);
-            }
-        });
+        if (!role.equals("ADMIN")) {
+            menu_add_employee.setVisibility(View.GONE);
+        } else {
+            menu_add_employee.setVisibility(View.VISIBLE);
+            menu_add_employee.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getContext(), EmployeeActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
         return view;
     }
 

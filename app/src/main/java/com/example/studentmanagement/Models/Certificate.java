@@ -1,5 +1,7 @@
 package com.example.studentmanagement.Models;
 
+import com.example.studentmanagement.dto.CertificateDTO;
+
 import java.time.LocalDate;
 
 public class Certificate {
@@ -11,6 +13,16 @@ public class Certificate {
     private Double overalScore;
     private String describe;
     private String link;
+
+    public Certificate(CertificateDTO certificateDTO) {
+        this.id = certificateDTO.getId();
+        this.name = certificateDTO.getName();
+        this.startCertificate = certificateDTO.getStartCertificate();
+        this.endCertificate = certificateDTO.getEndCertificate();
+        this.overalScore = certificateDTO.getOveralScore();
+        this.describe = certificateDTO.getDescribe();
+        this.link = certificateDTO.getLink();
+    }
 
     public String getId() {
         return id;

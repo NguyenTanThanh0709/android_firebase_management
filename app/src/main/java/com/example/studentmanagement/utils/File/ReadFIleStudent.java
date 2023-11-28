@@ -3,6 +3,7 @@ package com.example.studentmanagement.utils.File;
 import android.content.Context;
 import android.os.Environment;
 
+import com.example.studentmanagement.Models.Student;
 import com.example.studentmanagement.dto.StudentDTO;
 
 
@@ -81,9 +82,8 @@ public class ReadFIleStudent {
                     case "Giới tính":
                         studentDTO.setSex(Boolean.parseBoolean(cell.getStringCellValue()));
                         break;
-
                     case "avatar":
-                        studentDTO.setAvatar(cell.getStringCellValue());
+                        studentDTO.setAvatar("https://firebasestorage.googleapis.com/v0/b/tsimple-384dd.appspot.com/o/image%2Fd7b4d46e-10d1-4cb8-a80d-f199b327253d?alt=media&token=bcfd4618-da43-4100-ba3b-c2a3f8fcd92b");
                         break;
                     case "Ngày nhập học":
                         studentDTO.setStartSchool(cell.getStringCellValue());
@@ -100,5 +100,7 @@ public class ReadFIleStudent {
         }
         return studentDTO;
     }
+
+
 
 }

@@ -57,11 +57,12 @@ public class CertificateFragment extends Fragment{
 
     private RecyclerView recyclerView;
     private CertificateAdapter certificateAdapter;
-    private List<Certificate> certificateList;
+
 
     private FloatingActionButton menu_add_certificate;
 
     private DatabaseManagerStudent databaseManagerStudent;
+    private List<Certificate> certificateList;
     private String phone = "";
 
     public CertificateFragment() {

@@ -3,7 +3,9 @@ package com.example.studentmanagement.Adapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -31,10 +33,13 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectH
 
     private List<Subject> list;
     private Context context;
+    private String role;
 
     public SubjectAdapter(List<Subject> list, Context context) {
         this.list = list;
         this.context = context;
+        SharedPreferences preferences = context.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        role = preferences.getString("role", "");
     }
 
     public SubjectAdapter() {
@@ -78,13 +83,21 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.SubjectH
                 .error(R.drawable.user)
                 .into(holder.imgImageView);
 
+        boolean isAdmin = role.equals("EMPLOYEE");
 
-        holder.imageView_more_subject.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showDeleteConfirmationDialog(subject.getId());
-            }
-        });
+        // Find the menu items
+
+        if (isAdmin) {
+            holder.imageView_more_subject.setVisibility(View.GONE);
+        } else {
+            holder.imageView_more_subject.setVisibility(View.VISIBLE);
+            holder.imageView_more_subject.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showDeleteConfirmationDialog(subject.getId());
+                }
+            });
+        }
 
     }
 

@@ -7,6 +7,12 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+    <CheckBox
+        android:id="@+id/checkBoxDefaultSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mặc định"/>
+
     <EditText
         android:id="@+id/SearchByName"
         android:layout_margin="5dp"
@@ -31,6 +37,35 @@
         android:layout_margin="5dp"
         android:layout_height="wrap_content"
         android:hint="Tìm kiếm theo năm nhập học"/>
+    <EditText
+        android:id="@+id/SearchByBirthDay"
+        android:layout_width="match_parent"
+        android:layout_margin="5dp"
+        android:layout_height="wrap_content"
+        android:hint="Tìm kiếm theo năm sinh"/>
+
+    <!-- RadioGroup để nhóm RadioButton -->
+    <RadioGroup
+        android:id="@+id/radioGroupGender"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
+
+        <!-- RadioButton cho giới tính Nam -->
+        <RadioButton
+            android:id="@+id/radioButtonMale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nam"/>
+
+        <!-- RadioButton cho giới tính Nữ -->
+        <RadioButton
+            android:id="@+id/radioButtonFemale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nữ"/>
+    </RadioGroup>
 
     <Spinner
         android:id="@+id/spinnerSearchByClass"

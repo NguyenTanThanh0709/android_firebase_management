@@ -20,11 +20,13 @@
     <ImageView
         android:layout_width="80dp"
         android:layout_height="80dp"
+        android:id="@+id/image_user"
         android:src="@mipmap/ic_launcher"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Nguyen Tan Thanh"
+        android:id="@+id/name_user"
         android:textStyle="bold"
         android:layout_marginTop="8dp"
         android:textSize="16sp"
@@ -33,6 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="1@gmail.com"
+        android:id="@+id/email_user"
         android:layout_marginTop="2dp"
         android:textSize="16sp"
         android:textColor="@color/white"/>
@@ -40,6 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Role"
+        android:id="@+id/role_user"
         android:layout_marginTop="2dp"
         android:textSize="16sp"
         android:textColor="@color/white"/>

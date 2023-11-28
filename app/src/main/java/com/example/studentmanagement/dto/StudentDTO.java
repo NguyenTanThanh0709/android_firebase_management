@@ -18,6 +18,8 @@ public class StudentDTO {
     private String endSchool;
     private String class_;
 
+
+
     public StudentDTO() {
     }
 

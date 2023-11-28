@@ -5,7 +5,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.studentmanagement.Models.Certificate;
-import com.example.studentmanagement.Models.Student;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -20,20 +19,16 @@ import java.util.List;
 
 public class ExportFileCertificate {
 
-    public static void exportToExcel(Student student, Context context) {
+    public static void exportToExcel(String name,String phone, List<Certificate> list, Context context) {
 
         Workbook workbook = new XSSFWorkbook();
 
-        if(student == null){
-            Toast.makeText(context.getApplicationContext(), "Kiểm Tra Loại Thông tin học sinh", Toast.LENGTH_SHORT).show();
-            return ;
-        }
-        if( student.getCertificates().size() == 0){
+
+        if( list.size() == 0){
             Toast.makeText(context.getApplicationContext(), "Sinh Viên chưa có chứng chỉ nào để xuất!", Toast.LENGTH_SHORT).show();
             return ;
         }
 
-        List<Certificate> certificateList = student.getCertificates();
 
 
 
@@ -50,10 +45,10 @@ public class ExportFileCertificate {
         headerRow.createCell(7).setCellValue("Link chứng chỉ");
 
         int rowNum = 1;
-        for (Certificate certificate : certificateList) {
+        for (Certificate certificate : list) {
             Row row = sheet.createRow(rowNum++);
-            row.createCell(0).setCellValue(student.getName());
-            row.createCell(1).setCellValue(student.getPhoneNumber());
+            row.createCell(0).setCellValue(name);
+            row.createCell(1).setCellValue(phone);
             row.createCell(2).setCellValue(certificate.getName());
             row.createCell(3).setCellValue(certificate.getStartCertificate());
             row.createCell(4).setCellValue(certificate.getEndCertificate());
@@ -63,7 +58,7 @@ public class ExportFileCertificate {
         }
 
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(System.currentTimeMillis());
-        String fileName = "Certificate_" + student.getName() + timeStamp + ".xlsx";
+        String fileName = "Certificate_" + name + timeStamp + ".xlsx";
 
         // Get the external storage directory
         File externalFilesDir = context.getExternalFilesDir(null);

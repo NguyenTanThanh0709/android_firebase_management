@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Environment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +38,7 @@ import com.example.studentmanagement.Models.Subject;
 import com.example.studentmanagement.Models.User;
 import com.example.studentmanagement.R;
 import com.example.studentmanagement.dto.StudentDTO;
+import com.example.studentmanagement.utils.DatabaseManagerClass;
 import com.example.studentmanagement.utils.DatabaseManagerStudent;
 import com.example.studentmanagement.utils.File.ExportFileStudent;
 import com.example.studentmanagement.utils.File.ReadFIleStudent;
@@ -55,10 +58,14 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -81,11 +88,13 @@ public class StudentFragment extends Fragment  implements CustomSortDialogFragme
     private StudentAdapter studentAdapter;
     private List<Student> studentList;
     private List<Student> studentList_;
-
+    private List<Class_> classList;
     private Button sort_student;
     private Button find_student;
     private  Button add_student;
+    private String role;
     private  Button export_list_student;
+    private DatabaseManagerClass databaseManagerClass;
     private  Button import_list_student;
     private DatabaseManagerStudent databaseManagerStudent;
     private static final int PICK_EXCEL_FILE_REQUEST = 123;
@@ -93,6 +102,16 @@ public class StudentFragment extends Fragment  implements CustomSortDialogFragme
         // Required empty public constructor
     }
 
+    private static final String ARG_CLASS_ID = "classId";
+
+    // Add a static method to create a new instance of StudentFragment with the classId parameter
+    public static StudentFragment newInstance(String classId) {
+        StudentFragment fragment = new StudentFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_CLASS_ID, classId);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
 
     /**
@@ -122,6 +141,8 @@ public class StudentFragment extends Fragment  implements CustomSortDialogFragme
         }
     }
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -131,29 +152,52 @@ public class StudentFragment extends Fragment  implements CustomSortDialogFragme
         View view = inflater.inflate(R.layout.fragment_student, container, false);
         recyclerView = view.findViewById(R.id.student_recycleview);
         databaseManagerStudent = new DatabaseManagerStudent();
+        databaseManagerClass = new DatabaseManagerClass();
+        classList  = new ArrayList<>();
+        studentList_ = new ArrayList<>();
         sort_student = view.findViewById(R.id.sort_student);
         find_student = view.findViewById(R.id.find_student);
-
         add_student = view.findViewById(R.id.add_student);
         import_list_student = view.findViewById(R.id.import_list_student);
         export_list_student = view.findViewById(R.id.export_list_student);
 
-        studentList_ = new ArrayList<>();
-        import_list_student.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openFilePicker();
-            }
-        });
+        SharedPreferences preferences = requireContext().getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        role = preferences.getString("role", "");
+
+        if(role.equals("EMPLOYEE")){
+            import_list_student.setVisibility(View.GONE);
+            export_list_student.setVisibility(View.GONE);
+            add_student.setVisibility(View.GONE);
+        }else {
+
+            studentList_ = new ArrayList<>();
+            import_list_student.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    openFilePicker();
+                }
+            });
 
 
-        export_list_student.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ExportFileStudent.exportToExcel(studentList_,requireContext());
+            export_list_student.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ExportFileStudent.exportToExcel(studentList,requireContext());
 
-            }
-        });
+                }
+            });
+
+            add_student.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getContext(), StudentActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+        }
+
+
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         studentList = new ArrayList<>();
@@ -161,12 +205,17 @@ public class StudentFragment extends Fragment  implements CustomSortDialogFragme
         studentAdapter = new StudentAdapter(studentList, getContext());
         recyclerView.setAdapter(studentAdapter);
 
-//        getStudent();
-//        generrateData();
 
+        getAllClass();
         getAllStudent();
 
         init();
+
+        if (getArguments() != null) {
+            String classId = getArguments().getString(ARG_CLASS_ID);
+            List<Student> list = filterStudentsByClass(studentList,classId);
+            studentAdapter.setFilteredStudentList(list);
+        }
         return view;
     }
 
@@ -192,6 +241,7 @@ public class StudentFragment extends Fragment  implements CustomSortDialogFragme
                 }
                 studentList.clear();
                 studentList.addAll(tempUserList);
+                studentList_.addAll(tempUserList);
                 studentAdapter.notifyDataSetChanged();
             } else {
                 // Handle the error if the task was not successful
@@ -218,33 +268,254 @@ public class StudentFragment extends Fragment  implements CustomSortDialogFragme
             }
         });
 
-        add_student.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), StudentActivity.class);
-                startActivity(intent);
-            }
-        });
+
     }
 
 
     public void showSortDialog() {
         CustomSortDialogFragment sortDialog = new CustomSortDialogFragment();
+        sortDialog.setSortDialogListener(this); // Set the listener
         sortDialog.show(requireFragmentManager(), "CustomSortDialogFragment");
     }
     public void showSearchDialog() {
         SearchDialogFragment searchDialog = new SearchDialogFragment();
+        searchDialog.setSearchDialogListener(this);
+        searchDialog.setClassList(classList);
         searchDialog.show(requireFragmentManager(), "SearchDialogFragment");
     }
 
     @Override
-    public void onSortApplied(boolean sortByDate, boolean sortByName, boolean sortByStartLearn) {
+    public void onSortApplied(boolean sortByName, boolean sortByDate, boolean sortByGPA, boolean sortByStartLearn, boolean sortByName_,boolean sortByDate_,boolean sortByGPA_, boolean sortByStartLearn_) {
+        // Example:
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        Collections.sort(studentList, new Comparator<Student>() {
+            @Override
+            public int compare(Student student1, Student student2) {
+                if (sortByName) {
+                    // Compare by name logic
+                    return student1.getName().compareTo(student2.getName()); // Adjust the comparison based on your Student model
+                } else if (sortByDate) {
+                    try {
+                        // Chuyển đổi ngày sinh từ chuỗi sang đối tượng Date
+                        Date date1 = dateFormat.parse(student1.getBirthDay());
+                        Date date2 = dateFormat.parse(student2.getBirthDay());
 
+                        // So sánh ngày sinh
+                        if (date1 != null && date2 != null) {
+                            return date1.compareTo(date2);
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    // Mặc định trả về 0 nếu có lỗi
+                    return 0;
+                } else if (sortByGPA) {
+                    // Compare by GPA logic
+                    return Double.compare(student1.getGPA(), student2.getGPA());
+                } else if (sortByStartLearn) {
+                    // Compare by start learn logic
+                    try {
+                        // Chuyển đổi ngày sinh từ chuỗi sang đối tượng Date
+                        Date date1 = dateFormat.parse(student1.getStartSchool());
+                        Date date2 = dateFormat.parse(student2.getStartSchool());
+
+                        // So sánh ngày sinh
+                        if (date1 != null && date2 != null) {
+                            return date1.compareTo(date2);
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    // Mặc định trả về 0 nếu có lỗi
+                    return 0;
+
+                }else if (sortByName_) {
+                    // Compare by name logic
+                    return student2.getName().compareTo(student1.getName()); // Adjust the comparison based on your Student model
+                } else if (sortByDate_) {
+                    try {
+                        // Chuyển đổi ngày sinh từ chuỗi sang đối tượng Date
+                        Date date1 = dateFormat.parse(student1.getBirthDay());
+                        Date date2 = dateFormat.parse(student2.getBirthDay());
+
+                        // So sánh ngày sinh
+                        if (date1 != null && date2 != null) {
+                            return date2.compareTo(date1);
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    // Mặc định trả về 0 nếu có lỗi
+                    return 0;
+                } else if (sortByGPA_) {
+                    // Compare by GPA logic
+                    return Double.compare(student2.getGPA(), student1.getGPA());
+                } else if (sortByStartLearn_) {
+                    try {
+                        // Chuyển đổi ngày sinh từ chuỗi sang đối tượng Date
+                        Date date1 = dateFormat.parse(student1.getStartSchool());
+                        Date date2 = dateFormat.parse(student2.getStartSchool());
+
+                        // So sánh ngày sinh
+                        if (date1 != null && date2 != null) {
+                            return date2.compareTo(date1);
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    // Mặc định trả về 0 nếu có lỗi
+                    return 0;
+                }
+                // Add more criteria as needed
+
+                return 0; // Default comparison, adjust based on your needs
+            }
+        });
+
+        // Update the adapter after sorting
+        studentAdapter.notifyDataSetChanged();
     }
+
+
     @Override
-    public void onSearchApplied(String searchByName, String searchByPhone, String searchByEmail, String selectedClass, String searchByStartLearn) {
+    public void onSearchApplied(Boolean checkbox, String searchByName, String searchByPhone, String searchByEmail, String selectedClass, String searchByStartLearn, String searchByBirthDay, Boolean gender) {
+        List<Student> result = new ArrayList<>(studentList_);
+
+        if(checkbox){
+            studentAdapter.setFilteredStudentList(studentList_);
+        }else {
+            result = filterStudentsByName(result, searchByName);
+            result = filterStudentsByPhone(new ArrayList<>(result), searchByPhone);
+            result = filterStudentsByEmail(new ArrayList<>(result), searchByEmail);
+            result = filterStudentsByStartLearn(new ArrayList<>(result), searchByStartLearn);
+            result = filterStudentsByBirthDay(new ArrayList<>(result), searchByBirthDay);
+            result = filterStudentsByGender(new ArrayList<>(result), gender);
+            result = filterStudentsByClass(new ArrayList<>(result), selectedClass);
+
+
+            // Update the adapter with the filtered list
+            studentAdapter.setFilteredStudentList(result);
+        }
+
 
     }
+
+    private List<Student> filterStudentsByName(List<Student> list, String searchByName) {
+        List<Student> result = new ArrayList<>();
+        if(searchByName.isEmpty()){
+            return list;
+        }
+        for (Student student : list) {
+            if (student.getName().toLowerCase().contains(searchByName.toLowerCase())) {
+                result.add(student);
+            }
+        }
+        return result;
+    }
+
+    private List<Student> filterStudentsByPhone(List<Student> list,String searchByPhone) {
+        List<Student> result = new ArrayList<>();
+        if(searchByPhone.isEmpty()){
+            return list;
+        }
+        for (Student student : list) {
+            if (student.getPhoneNumber().toLowerCase().contains(searchByPhone.toLowerCase())) {
+                result.add(student);
+            }
+        }
+        return result;
+    }
+
+    private List<Student> filterStudentsByEmail(List<Student> list,String searchByEmail) {
+        if(searchByEmail.isEmpty()){
+            return list;
+        }
+        List<Student> result = new ArrayList<>();
+        for (Student student : list) {
+            if (student.getEmail().toLowerCase().contains(searchByEmail.toLowerCase())) {
+                result.add(student);
+            }
+        }
+        return result;
+    }
+
+    private List<Student> filterStudentsByClass(List<Student> list,String selectedClass) {
+        if(selectedClass.equals("tìm theo lớp")){
+            return list;
+        }
+        List<Student> result = new ArrayList<>();
+        for (Student student : list) {
+            if (student.getClass_().getName().equals(selectedClass)) {
+                result.add(student);
+            }
+        }
+        return result;
+    }
+
+    private List<Student> filterStudentsByStartLearn(List<Student> list,String searchByStartLearn) {
+        if(searchByStartLearn.isEmpty()){
+            return list;
+        }
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        List<Student> result = new ArrayList<>();
+        for (Student student : studentList) {
+            try {
+                Date date = dateFormat.parse(student.getStartSchool());
+                SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
+                String year = yearFormat.format(date);
+                if(year.equals(searchByStartLearn)){
+                    result.add(student);
+                }
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+                continue;
+            }
+        }
+        return result;
+    }
+
+    private List<Student> filterStudentsByBirthDay(List<Student> list,String searchByBirthDay) {
+        if(searchByBirthDay.isEmpty()){
+            return list;
+        }
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        List<Student> result = new ArrayList<>();
+        for (Student student : studentList) {
+            try {
+                Date date = dateFormat.parse(student.getBirthDay());
+                SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
+                String year = yearFormat.format(date);
+                if(year.equals(searchByBirthDay)){
+                    result.add(student);
+                }
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+                continue;
+            }
+        }
+        return result;
+    }
+
+    private List<Student> filterStudentsByGender(List<Student> list,Boolean gender) {
+        if(gender == null){
+            return list;
+        }
+        List<Student> result = new ArrayList<>();
+        for (Student student : list) {
+            if (student.getSex() == gender) {
+                result.add(student);
+            }
+        }
+        return result;
+    }
+
+
     private void openFilePicker() {
         // Check if permission is granted
         if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -288,9 +559,7 @@ public class StudentFragment extends Fragment  implements CustomSortDialogFragme
                     Log.d("uri", selectedFileUri.toString());
                     List<StudentDTO> list = ReadFIleStudent.readExcelFile(getActivity(), inputStream);
 
-                    for (StudentDTO studentDTO: list){
-                        Log.d("StudentDTO", studentDTO.toString());
-                    }
+                    addFromDataBase(list);
                 } catch (IOException e) {
                     e.printStackTrace();
                     // Handle the error, for example, show a Toast
@@ -316,6 +585,84 @@ public class StudentFragment extends Fragment  implements CustomSortDialogFragme
         intent.setType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); // MIME type for Excel files
 
         startActivityForResult(intent, PICK_EXCEL_FILE_REQUEST);
+    }
+
+    private void getAllClass() {
+        Task<QuerySnapshot> getAllClassesTask = databaseManagerClass.getAllClasses();
+        getAllClassesTask.addOnSuccessListener(queryDocumentSnapshots -> {
+            List<Class_> tempList = new ArrayList<>();
+
+            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                // Convert each document to a Class_ object and add it to the list
+                Class_ myClass = document.toObject(Class_.class);
+                tempList.add(myClass);
+                Log.d("Class", myClass.toString());
+            }
+
+            // Clear and add to the main list
+            classList.clear();
+            classList.addAll(tempList);
+            // Notify any adapter or UI component that relies on this data to update
+            // For example, if you're using an ArrayAdapter, you would call adapter.notifyDataSetChanged();
+        }).addOnFailureListener(e -> {
+            // Handle failure
+            Log.e("TAG", "Error getting classes: ", e);
+        });
+    }
+
+    private void addFromDataBase(List<StudentDTO> list){
+        List<Student> studentList = new ArrayList<>();
+
+        for(StudentDTO studentDTO: list){
+
+            Class_ class_ = null;
+            for(Class_ class_1 : classList){
+                if(class_1.getId().equals(studentDTO.getClass_())){
+                    class_ = class_1;
+                    break;
+                }
+            }
+            Student student = Student.fromStudentDTO(studentDTO,class_);
+            studentList.add(student);
+        }
+
+        addList(studentList);
+    }
+
+    private void addList(List<Student> studentList_) {
+        List<Student> list = new ArrayList<>();
+        for(Student student: studentList_){
+            if(student.getPhoneNumber() ==null){
+                continue;
+            }
+            list.add(student);
+        }
+
+        Log.d("OK","OK");
+
+        // Create an instance of DatabaseManagerStudent
+
+// Call the method to add students and associate them with the class
+        Task<Void> addStudentsTask = databaseManagerStudent.addListStudentsAndAssociateWithClass(list);
+
+// Add a continuation to handle the result of the task
+        addStudentsTask.addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                studentList.addAll(list);
+                studentAdapter.notifyDataSetChanged();
+                Toast.makeText(getContext(),"Upload List Student Success", Toast.LENGTH_SHORT);
+            } else {
+                // Error: Handle the error appropriately
+                Exception exception = task.getException();
+                if (exception != null) {
+                    exception.printStackTrace();
+                    Toast.makeText(getContext(),"Upload List Student Fail", Toast.LENGTH_SHORT);
+
+                }
+            }
+        });
+
+
     }
 
 }

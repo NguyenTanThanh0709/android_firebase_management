@@ -2,8 +2,10 @@ package com.example.studentmanagement.Fragment;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -78,6 +80,7 @@ public class SubjectFragment extends Fragment {
     private RecyclerView recyclerView;
     private SubjectAdapter subjectAdapter;
     private List<Subject> subjectList;
+    private  String role;
 
     private FloatingActionButton menu_add_subject;
 
@@ -129,7 +132,8 @@ public class SubjectFragment extends Fragment {
 
         FirebaseApp.initializeApp(getContext().getApplicationContext());
         storageReference = FirebaseStorage.getInstance().getReference();
-
+        SharedPreferences preferences = requireContext().getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        role = preferences.getString("role", "");
         databaseManagerSubject =  new DatabaseManagerSubject();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -142,12 +146,18 @@ public class SubjectFragment extends Fragment {
 
 
         menu_add_subject = view.findViewById(R.id.menu_add_subject);
-        menu_add_subject.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showAddEditCertificateDialog();
-            }
-        });
+
+        if(role.equals("EMPLOYEE")){
+            menu_add_subject.setVisibility(View.GONE);
+        }else {
+            menu_add_subject.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showAddEditCertificateDialog();
+                }
+            });
+        }
+
 
         return view;
     }
